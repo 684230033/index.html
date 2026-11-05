@@ -893,7 +893,22 @@
             if (currentUser) localStorage.setItem('sr_currentUser', JSON.stringify(currentUser));
         }
 
+        // Convert common Google Drive share links into direct image URLs.
+        // The Drive file must be shared as: Anyone with the link - Viewer.
+        function getDisplayImageUrl(value) {
+            var url = String(value || '').trim();
+            if (!url) return DEFAULT_FALLBACK_IMG;
+            var match = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/) ||
+                        url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (match && /drive\.google\.com/.test(url)) {
+                return 'https://drive.google.com/uc?export=view&id=' + match[1];
+            }
+            return url;
+        }
+
         function handleImgError(img) {
+            if (img.dataset && img.dataset.fallbackApplied === '1') return;
+            if (img.dataset) img.dataset.fallbackApplied = '1';
             img.onerror = null;
             img.src = DEFAULT_FALLBACK_IMG;
         }
@@ -1129,7 +1144,7 @@
             grid.innerHTML = equipment.map(function(eq) {
                 var stock = getEquipmentStockInfo(eq.id);
                 return '<div onclick="selectEquipmentToBorrow(' + eq.id + ')" class="bg-white/95 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition cursor-pointer p-3 flex gap-3 items-center">' +
-                    '<img src="' + eq.imageUrl + '" onerror="handleImgError(this)" class="w-16 h-16 rounded-xl object-cover shrink-0 border border-slate-100">' +
+                    '<img src="' + getDisplayImageUrl(eq.imageUrl) + '" onerror="handleImgError(this)" class="w-16 h-16 rounded-xl object-cover shrink-0 border border-slate-100">' +
                     '<div class="min-w-0 flex-grow">' +
                         '<h4 class="font-bold text-navy-800 text-xs sm:text-sm truncate">' + eq.name + '</h4>' +
                         '<p class="text-[11px] text-slate-500 mt-0.5">หมวด: ' + eq.category + '</p>' +
@@ -1537,7 +1552,7 @@
                 var stock = getEquipmentStockInfo(eq.id);
                 return '<div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition overflow-hidden flex flex-col">' +
                     '<div class="h-40 w-full bg-slate-100 relative overflow-hidden">' +
-                        '<img src="' + eq.imageUrl + '" onerror="handleImgError(this)" class="w-full h-full object-cover">' +
+                        '<img src="' + getDisplayImageUrl(eq.imageUrl) + '" onerror="handleImgError(this)" class="w-full h-full object-cover">' +
                         '<span class="absolute top-2.5 right-2.5 bg-navy-800/80 backdrop-blur-md text-amber-300 text-[11px] px-2.5 py-0.5 rounded-full font-bold shadow">' +
                             eq.category +
                         '</span>' +
@@ -1589,7 +1604,7 @@
             var editId = document.getElementById('eqEditId').value;
             var name = document.getElementById('eqName').value.trim();
             var category = document.getElementById('eqCategory').value.trim();
-            var imageUrl = document.getElementById('eqImageUrl').value.trim();
+            var imageUrl = getDisplayImageUrl(document.getElementById('eqImageUrl').value.trim());
             var totalQty = parseInt(document.getElementById('eqTotalQty').value);
 
             if (editId) {
@@ -1851,7 +1866,7 @@
         }
 
         // ===== PATCH: reliable local/cloud persistence + stable session =====
-        var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYb_J7Ap5jl9XL72CQVIfK5v1hhZnwUDEdY4fTOxeq8yZFir8vLMpbz_4OK-Je2tYa/exec";
+        var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxntcI_PvB-ste8e7m6qi7-30p1-MctP_rDqDbA_vVQe4l1IUFIBTt-nVhB05VNd-Es/exec";
         var cloudWriteQueue = Promise.resolve();
         var cloudReady = false;
         var cloudSyncBusy = false;
