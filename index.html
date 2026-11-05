@@ -1849,194 +1849,256 @@
                     return '-';
             }
         }
-       var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMNbJdNUjv_8MQ-EdHAamLw9uhjw0sTQ8wwMDiQdE9TfargTdAvGhCr5aq07DVt25Q/exec";
 
-function saveStorage() {
-    if (currentUser) {
-        localStorage.setItem('sr_currentUser', JSON.stringify(currentUser));
-    }
-    if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.indexOf('script.google.com') !== -1) {
-        var payload = {
-            students: students,
-            equipment: equipment,
-            borrows: borrows,
-            settings: settings
-        };
-        fetch(GOOGLE_SCRIPT_URL, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify(payload)
-        })
-        .then(res => res.json())
-        .then(data => console.log("Cloud sync success:", data))
-        .catch(err => console.log("Cloud sync error:", err));
-        // ==========================================
-// 1. ตั้งค่าการเชื่อมต่อ Google Script Cloud
-// ==========================================
-var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMNbJdNUjv_8MQ-EdHAamLw9uhjw0sTQ8wwMDiQdE9TfargTdAvGhCr5aq07DVt25Q/exec";
+        // ===== PATCH: reliable local/cloud persistence + stable session =====
+        var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYb_J7Ap5jl9XL72CQVIfK5v1hhZnwUDEdY4fTOxeq8yZFir8vLMpbz_4OK-Je2tYa/exec";
+        var cloudWriteQueue = Promise.resolve();
+        var cloudReady = false;
+        var cloudSyncBusy = false;
+        var lastCloudSync = 0;
 
-// ตัวแประบบหลัก
-var students = JSON.parse(localStorage.getItem('sr_students')) || [];
-var equipment = JSON.parse(localStorage.getItem('sr_equipment')) || [];
-var borrows = JSON.parse(localStorage.getItem('sr_borrows')) || [];
-var settings = JSON.parse(localStorage.getItem('sr_settings')) || { rulePenalty: '', ruleRestore: '' };
-var currentUser = JSON.parse(localStorage.getItem('sr_currentUser')) || null;
+        function saveLocalSnapshot() {
+            localStorage.setItem('sr_students', JSON.stringify(students || []));
+            localStorage.setItem('sr_equipment', JSON.stringify(equipment || []));
+            localStorage.setItem('sr_borrows', JSON.stringify(borrows || []));
+            localStorage.setItem('sr_settings', JSON.stringify(settings || {}));
+            if (currentUser) localStorage.setItem('sr_currentUser', JSON.stringify(currentUser));
+            else localStorage.removeItem('sr_currentUser');
+        }
 
-// เซฟลง Local Storage ของเครื่องชั่วคราว
-function saveToLocal() {
-    localStorage.setItem('sr_students', JSON.stringify(students));
-    localStorage.setItem('sr_equipment', JSON.stringify(equipment));
-    localStorage.setItem('sr_borrows', JSON.stringify(borrows));
-    localStorage.setItem('sr_settings', JSON.stringify(settings));
-    if (currentUser) {
-        localStorage.setItem('sr_currentUser', JSON.stringify(currentUser));
-    }
-}
-
-// ==========================================
-// 2. ฟังก์ชัน บันทึก & โหลด Cloud แบบ Smart Merge (ข้อมูลไม่หายแน่นอน)
-// ==========================================
-function saveStorage() {
-    saveToLocal(); // บันทึกลงเครื่องทันที
-
-    if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.indexOf('script.google.com') !== -1) {
-        var payload = {
-            students: students,
-            equipment: equipment,
-            borrows: borrows,
-            settings: settings
-        };
-        fetch(GOOGLE_SCRIPT_URL, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify(payload)
-        })
-        .then(res => res.json())
-        .then(data => console.log("Cloud sync success:", data))
-        .catch(err => console.log("Cloud sync error:", err));
-    }
-}
-
-function loadStorage(callback) {
-    if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.indexOf('script.google.com') === -1) return;
-
-    fetch(GOOGLE_SCRIPT_URL)
-        .then(res => res.json())
-        .then(data => {
-            if (data && typeof data === 'object') {
-                // 1. ผสานข้อมูลนักเรียน (ป้องกันสมาชิกใหม่หายถ้า Cloud บันทึกไม่ทัน)
-                var cloudStudents = data.students || [];
-                var localStudents = JSON.parse(localStorage.getItem('sr_students')) || [];
-                var studentMap = {};
-                
-                cloudStudents.concat(localStudents).forEach(s => {
-                    if (s && s.studentId) {
-                        studentMap[String(s.studentId).trim()] = s;
-                    }
+        function saveStorage() {
+            saveLocalSnapshot(); // local-first: never wait for network
+            if (!GOOGLE_SCRIPT_URL) return;
+            var payload = {
+                action: 'save',
+                students: students || [],
+                equipment: equipment || [],
+                borrows: borrows || [],
+                settings: settings || {},
+                updatedAt: new Date().toISOString()
+            };
+            // Serialize writes so an older request cannot overwrite a newer change.
+            cloudWriteQueue = cloudWriteQueue.then(function () {
+                return fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload),
+                    cache: 'no-store'
+                }).then(function (res) {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.text();
+                }).then(function (text) {
+                    var result;
+                    try { result = JSON.parse(text); } catch (_) { result = { raw: text }; }
+                    if (result && result.success === false) throw new Error(result.message || 'Cloud rejected save');
+                    lastCloudSync = Date.now();
+                    console.info('Cloud save complete', result);
                 });
-                students = Object.values(studentMap);
+            }).catch(function (err) {
+                console.error('Cloud save failed; local copy is safe:', err);
+            });
+            return cloudWriteQueue;
+        }
 
-                // 2. ผสานรายการยืม-คืนทั้งหมด (Admin จะเห็นประวัติครบถ้วนไม่มีวันลบ)
-                var cloudBorrows = data.borrows || [];
-                var localBorrows = JSON.parse(localStorage.getItem('sr_borrows')) || [];
-                var borrowMap = {};
-                
-                cloudBorrows.concat(localBorrows).forEach(b => {
-                    if (b && b.id) {
-                        borrowMap[b.id] = b;
-                    }
-                });
-                borrows = Object.values(borrowMap);
-
-                // 3. อัปเดตอุปกรณ์และตั้งค่า
-                if (data.equipment) equipment = data.equipment;
-                if (data.settings) settings = data.settings;
-
-                saveToLocal();
-
-                // อัปเดตหน้าจอทันที
-                if (typeof renderAll === 'function') renderAll();
-                if (typeof updateUI === 'function') updateUI();
-
-                if (callback) callback();
+        function mergeByKey(cloudList, localList, keyName, preferLocalOnTie) {
+            var map = Object.create(null);
+            function stamp(item) {
+                var value = item && (item.updatedAt || item.createdAt);
+                var time = value ? Date.parse(value) : 0;
+                return isFinite(time) ? time : 0;
             }
-        })
-        .catch(err => console.log("Cloud load error:", err));
-}
+            // Merge by ID. The record with the newest timestamp wins; when timestamps
+            // are absent/equal, keep the local copy to avoid reverting a recent local PIN.
+            (Array.isArray(localList) ? localList : []).forEach(function (item) {
+                if (!item || item[keyName] == null) return;
+                map[String(item[keyName]).trim()] = item;
+            });
+            (Array.isArray(cloudList) ? cloudList : []).forEach(function (item) {
+                if (!item || item[keyName] == null) return;
+                var key = String(item[keyName]).trim();
+                var local = map[key];
+                if (!local || stamp(item) > stamp(local)) map[key] = item;
+                else if (stamp(item) === stamp(local)) map[key] = preferLocalOnTie ? Object.assign({}, item, local) : Object.assign({}, local, item);
+            });
+            return Object.keys(map).map(function (key) { return map[key]; });
+        }
 
-// ==========================================
-// 3. ปรับปรุงระบบ สมัครสมาชิก & ล็อกอิน (ล็อกรหัสเป็น String)
-// ==========================================
-function registerStudent(studentId, fullName, grade, roomNumber, phone, pin) {
-    var cleanId = String(studentId).trim();
-    var cleanPin = String(pin).trim();
+        function loadStorage(options) {
+            options = options || {};
+            if (!GOOGLE_SCRIPT_URL) return Promise.resolve(false);
+            if (cloudSyncBusy) return Promise.resolve(false);
+            cloudSyncBusy = true;
+            var localStudents = JSON.parse(localStorage.getItem('sr_students') || '[]');
+            var localBorrows = JSON.parse(localStorage.getItem('sr_borrows') || '[]');
+            return fetch(GOOGLE_SCRIPT_URL + '?t=' + Date.now(), { method: 'GET', cache: 'no-store' })
+                .then(function (res) {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.json();
+                })
+                .then(function (data) {
+                    if (!data || typeof data !== 'object') throw new Error('Invalid cloud response');
+                    students = mergeByKey(data.students, localStudents, 'studentId', true);
+                    borrows = mergeByKey(data.borrows, JSON.parse(localStorage.getItem('sr_borrows') || '[]'), 'id', false);
+                    if (Array.isArray(data.equipment) && data.equipment.length) equipment = data.equipment;
+                    if (data.settings && typeof data.settings === 'object') settings = data.settings;
+                    saveLocalSnapshot();
+                    cloudReady = true;
+                    lastCloudSync = Date.now();
 
-    // เช็กว่ามีรหัสนักเรียนนี้อยู่แล้วหรือไม่
-    var exists = students.some(s => String(s.studentId).trim() === cleanId);
-    if (exists) {
-        alert("รหัสนักเรียนนี้ลงทะเบียนในระบบแล้ว");
-        return false;
-    }
+                    // Keep the current screen and selected tab. Refresh only its contents.
+                    if (currentUser) {
+                        if (currentUser.role === 'student') {
+                            var latest = students.find(function (s) {
+                                return String(s.studentId).trim() === String(currentUser.studentId).trim();
+                            });
+                            if (latest) currentUser = latest;
+                            renderStudentPortal();
+                            var tab = !document.getElementById('stdTabHistory').classList.contains('hidden') ? 'history' :
+                                      !document.getElementById('stdTabScore').classList.contains('hidden') ? 'score' : 'borrow';
+                            switchStudentTab(tab);
+                        } else if (currentUser.role === 'admin') {
+                            renderAdminPortal();
+                        }
+                    }
+                    applySettings();
+                    if (typeof options.callback === 'function') options.callback();
+                    return true;
+                })
+                .catch(function (err) {
+                    console.error('Cloud load failed; using local data:', err);
+                    cloudReady = true; // allow offline login against this device's saved data
+                    return false;
+                })
+                .finally(function () { cloudSyncBusy = false; });
+        }
 
-    var newStudent = {
-        studentId: cleanId,
-        fullName: String(fullName).trim(),
-        grade: grade,
-        roomNumber: roomNumber,
-        phone: String(phone).trim(),
-        pin: cleanPin,
-        role: 'student',
-        score: 100,
-        scoreLogs: [{
-            date: new Date().toISOString(),
-            points: 100,
-            reason: 'คะแนนแรกเริ่มเปิดบัญชีนักเรียน'
-        }]
-    };
+        // Registration checks the cloud first to prevent duplicate IDs across devices.
+        function processRegister(e) {
+            e.preventDefault();
+            var studentId = String(document.getElementById('regId').value).trim();
+            var name = document.getElementById('regName').value.trim();
+            var grade = document.getElementById('regGrade').value.trim();
+            var roomNo = String(document.getElementById('regRoomNo').value).trim();
+            var phone = document.getElementById('regPhone').value.trim();
+            var pin = String(document.getElementById('regPin').value).trim();
 
-    students.push(newStudent);
-    saveStorage(); // บันทึกลง Local และ Cloud ทันที
-    alert("ลงทะเบียนสำเร็จ! สามารถเข้าสู่ระบบได้ทันที");
-    return true;
-}
+            if (!/^\d{5}$/.test(studentId)) return alert('กรุณากรอกรหัสนักเรียนเป็นตัวเลข 5 หลัก');
+            if (!/^\d{4,6}$/.test(pin)) return alert('PIN ต้องเป็นตัวเลข 4-6 หลัก');
+            if (!name || !grade || !roomNo || !phone) return alert('กรุณากรอกข้อมูลให้ครบ');
 
-function loginUser(inputId, inputPin) {
-    var cleanId = String(inputId).trim();
-    var cleanPin = String(inputPin).trim();
+            loadStorage().then(function () {
+                if (students.some(function (s) { return String(s.studentId).trim() === studentId; })) {
+                    alert('รหัสนักเรียนนี้มีผู้ลงทะเบียนแล้ว กรุณาเข้าสู่ระบบด้วยรหัสเดิม');
+                    switchAuthTab('login');
+                    document.getElementById('loginId').value = studentId;
+                    return;
+                }
+                var newStudent = {
+                    studentId: studentId, fullName: name, grade: grade, roomNumber: roomNo,
+                    phone: phone, pin: pin, role: 'student', updatedAt: new Date().toISOString(), score: 100,
+                    scoreLogs: [{ date: new Date().toISOString(), points: 100, reason: 'คะแนนแรกเริ่มเปิดบัญชีนักเรียน' }]
+                };
+                students.push(newStudent);
+                currentUser = newStudent;
+                saveStorage();
+                alert('ลงทะเบียนสำเร็จ! เข้าสู่ระบบให้อัตโนมัติ');
+                document.getElementById('formRegister').reset();
+                renderApp();
+            });
+        }
 
-    // กรณี Admin
-    if (cleanId.toUpperCase() === 'ADMIN' && cleanPin === '1234') {
-        currentUser = { role: 'admin', fullName: 'ผู้ดูแลระบบ (Admin)' };
-        localStorage.setItem('sr_currentUser', JSON.stringify(currentUser));
-        return { success: true, role: 'admin' };
-    }
+        function processLogin(e) {
+            e.preventDefault();
+            var inputId = String(document.getElementById('loginId').value).trim();
+            var inputPin = String(document.getElementById('loginPin').value).trim();
+            var submit = document.querySelector('#formLogin button[type="submit"]');
+            if (submit) submit.disabled = true;
 
-    // กรณี นักเรียน (บังคับเทียบแบบ String ป้องกันปัญหา 0 นำหน้า)
-    var found = students.find(s => String(s.studentId).trim() === cleanId && String(s.pin).trim() === cleanPin);
+            loadStorage().then(function () {
+                if (inputId.toUpperCase() === ADMIN_CREDS.studentId && inputPin === ADMIN_CREDS.pin) {
+                    currentUser = ADMIN_CREDS;
+                } else {
+                    var found = students.find(function (s) {
+                        return String(s.studentId).trim() === inputId && String(s.pin).trim() === inputPin;
+                    });
+                    if (!found) {
+                        alert('ไม่พบข้อมูลบัญชีนี้ หรือ PIN ไม่ถูกต้อง หากเคยลงทะเบียนแล้วให้ตรวจสอบรหัสนักเรียนและ PIN เดิม');
+                        if (submit) submit.disabled = false;
+                        return;
+                    }
+                    currentUser = found;
+                }
+                saveLocalSnapshot();
+                renderApp();
+                if (submit) submit.disabled = false;
+            });
+        }
 
-    if (found) {
-        currentUser = found;
-        localStorage.setItem('sr_currentUser', JSON.stringify(currentUser));
-        return { success: true, role: 'student', user: found };
-    } else {
-        return { success: false, message: "รหัสประจำตัวนักเรียน หรือ PIN ไม่ถูกต้อง" };
-    }
-}
+        // Refresh data every 5 seconds without resetting authentication or returning to register.
+        function ensureDemoAccount() {
+            var demoId = '15686';
+            if (!students.some(function (student) { return String(student.studentId).trim() === demoId; })) {
+                var now = new Date().toISOString();
+                students.push({
+                    studentId: demoId, fullName: 'ผู้ใช้ทดลองระบบ', grade: 'ทดลองใช้งาน',
+                    roomNumber: '-', phone: '-', pin: '1234', role: 'student', score: 100,
+                    scoreLogs: [{ date: now, points: 100, reason: 'บัญชีทดลองระบบ' }],
+                    createdAt: now, updatedAt: now
+                });
+                saveStorage();
+            }
+        }
 
-// ==========================================
-// 4. ระบบ Real-time Auto Refresh (ซิงค์ทุก 5 วินาที)
-// ==========================================
-window.addEventListener('DOMContentLoaded', function() {
-    // โหลดข้อมูลครั้งแรกเมื่อเปิดหน้า
-    loadStorage();
+        document.addEventListener('DOMContentLoaded', function () {
+            loadStorage().then(function () {
+                ensureDemoAccount();
+                renderApp();
+            });
+            window.setInterval(function () {
+                if (!document.hidden) loadStorage();
+            }, 5000);
+        });
+        window.addEventListener('storage', function (event) {
+            if (event.key && event.key.indexOf('sr_') === 0) {
+                students = JSON.parse(localStorage.getItem('sr_students') || '[]');
+                borrows = JSON.parse(localStorage.getItem('sr_borrows') || '[]');
+                equipment = JSON.parse(localStorage.getItem('sr_equipment') || '[]');
+                settings = JSON.parse(localStorage.getItem('sr_settings') || '{}');
+                currentUser = JSON.parse(localStorage.getItem('sr_currentUser') || 'null');
+                renderApp();
+            }
+        });
+        // ===== END PATCH =====
 
-    // ดึงข้อมูล Real-time จาก Cloud ทุกๆ 5 วินาที (เพื่อให้ Admin เห็นทุกคนที่ยืมแบบ Real-time)
-    setInterval(function() {
-        loadStorage();
-    }, 5000);
-});
-    }
-}
-    </script>
+        // Demo account for evaluation. It is created only if the ID does not exist.
+        // Student ID: 15686 | PIN: 1234
+        document.addEventListener('DOMContentLoaded', function () {
+            loadStorage().then(function () {
+                var demoId = '15686';
+                var exists = students.some(function (student) {
+                    return String(student.studentId).trim() === demoId;
+                });
+                if (!exists) {
+                    students.push({
+                        studentId: demoId,
+                        fullName: 'ผู้ใช้ทดลองระบบ',
+                        grade: 'ทดลองใช้งาน',
+                        roomNumber: '-',
+                        phone: '-',
+                        pin: '1234',
+                        role: 'student',
+                        score: 100,
+                        scoreLogs: [{ date: new Date().toISOString(), points: 100, reason: 'บัญชีทดลองระบบ' }],
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    });
+                    saveStorage();
+                }
+            }).catch(function (error) {
+                console.error('Demo account initialization failed:', error);
+            });
+        });
+
+</script>
 </body>
 </html>
