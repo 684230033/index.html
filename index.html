@@ -96,7 +96,7 @@
     <div class="flex-grow flex flex-col">
 
         <!-- ================= VIEW 1: AUTHENTICATION (LOGIN / REGISTER) ================= -->
-        <section id="viewAuth" class="flex-grow flex items-center justify-center p-3 sm:p-4 py-6 sm:py-8">
+        <section id="viewAuth" class="hidden flex-grow flex items-center justify-center p-3 sm:p-4 py-6 sm:py-8">
             <div class="max-w-md w-full bg-white/95 backdrop-blur-md rounded-3xl shadow-xl border border-slate-200/80 overflow-hidden">
                 <div class="bg-navy-800 text-white p-5 sm:p-6 text-center relative border-b-4 border-amber-400">
                     <img id="authLogoImg" src="logo.png" onerror="this.style.display='none'" alt="Logo" class="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-2 object-contain bg-white/10 p-1 rounded-2xl border border-amber-400/30">
@@ -105,8 +105,8 @@
                     
                     <!-- Tabs Selection -->
                     <div class="flex bg-navy-900 p-1 rounded-2xl mt-4 sm:mt-5 text-xs font-semibold">
-                        <button id="btnTabLogin" onclick="switchAuthTab('login')" class="flex-1 py-2 sm:py-2.5 rounded-xl transition bg-amber-400 text-navy-900 font-bold">เข้าสู่ระบบ</button>
-                        <button id="btnTabRegister" onclick="switchAuthTab('register')" class="flex-1 py-2 sm:py-2.5 rounded-xl transition text-slate-300 hover:text-white">ลงทะเบียนนักเรียน</button>
+                        <button id="btnTabLogin" type="button" onclick="switchAuthTab('login')" class="flex-1 py-2 sm:py-2.5 rounded-xl transition bg-amber-400 text-navy-900 font-bold">เข้าสู่ระบบ</button>
+                        <button id="btnTabRegister" type="button" onclick="switchAuthTab('register')" class="flex-1 py-2 sm:py-2.5 rounded-xl transition text-slate-300 hover:text-white">ลงทะเบียนนักเรียน</button>
                     </div>
                 </div>
 
@@ -203,13 +203,13 @@
 
             <!-- STUDENT NAVIGATION TABS -->
             <div class="flex border-b border-slate-200/80 space-x-1 sm:space-x-2 text-xs sm:text-sm overflow-x-auto bg-white/60 p-1 rounded-2xl backdrop-blur-sm">
-                <button id="stdNavTab1" onclick="switchStudentTab('borrow')" class="flex-1 py-2.5 px-3 font-bold rounded-xl bg-navy-800 text-white transition whitespace-nowrap text-center">
+                <button id="stdNavTab1" type="button" onclick="switchStudentTab('borrow')" class="flex-1 py-2.5 px-3 font-bold rounded-xl bg-navy-800 text-white transition whitespace-nowrap text-center">
                     ⚽ 1. ยืมอุปกรณ์กีฬา
                 </button>
-                <button id="stdNavTab2" onclick="switchStudentTab('history')" class="flex-1 py-2.5 px-3 font-medium text-slate-600 hover:text-navy-800 transition whitespace-nowrap text-center">
+                <button id="stdNavTab2" type="button" onclick="switchStudentTab('history')" class="flex-1 py-2.5 px-3 font-medium text-slate-600 hover:text-navy-800 transition whitespace-nowrap text-center">
                     📋 2. ประวัติการยืม-คืน
                 </button>
-                <button id="stdNavTab3" onclick="switchStudentTab('score')" class="flex-1 py-2.5 px-3 font-medium text-slate-600 hover:text-navy-800 transition whitespace-nowrap text-center">
+                <button id="stdNavTab3" type="button" onclick="switchStudentTab('score')" class="flex-1 py-2.5 px-3 font-medium text-slate-600 hover:text-navy-800 transition whitespace-nowrap text-center">
                     ⭐ 3. ประวัติคะแนน & กฎระเบียบ
                 </button>
             </div>
@@ -432,16 +432,16 @@
             </div>
 
             <div class="flex border-b border-slate-200 space-x-1 sm:space-x-2 text-xs sm:text-sm overflow-x-auto bg-white/60 p-1 rounded-2xl">
-                <button id="adminTab1" onclick="switchAdminSubTab('requests')" class="px-3 py-2 sm:px-4 sm:py-2.5 font-bold border-b-2 border-navy-800 text-navy-800 whitespace-nowrap">
+                <button id="adminTab1" type="button" onclick="switchAdminSubTab('requests')" class="px-3 py-2 sm:px-4 sm:py-2.5 font-bold border-b-2 border-navy-800 text-navy-800 whitespace-nowrap">
                     📋 คำขอยืม & การคืน
                 </button>
-                <button id="adminTab2" onclick="switchAdminSubTab('equipment')" class="px-3 py-2 sm:px-4 sm:py-2.5 font-medium text-slate-500 hover:text-navy-800 whitespace-nowrap">
+                <button id="adminTab2" type="button" onclick="switchAdminSubTab('equipment')" class="px-3 py-2 sm:px-4 sm:py-2.5 font-medium text-slate-500 hover:text-navy-800 whitespace-nowrap">
                     ⚽ จัดการคลังอุปกรณ์
                 </button>
-                <button id="adminTab3" onclick="switchAdminSubTab('students')" class="px-3 py-2 sm:px-4 sm:py-2.5 font-medium text-slate-500 hover:text-navy-800 whitespace-nowrap">
+                <button id="adminTab3" type="button" onclick="switchAdminSubTab('students')" class="px-3 py-2 sm:px-4 sm:py-2.5 font-medium text-slate-500 hover:text-navy-800 whitespace-nowrap">
                     👥 จัดการนักเรียน & คะแนน
                 </button>
-                <button id="adminTab4" onclick="switchAdminSubTab('settings')" class="px-3 py-2 sm:px-4 sm:py-2.5 font-medium text-slate-500 hover:text-navy-800 whitespace-nowrap">
+                <button id="adminTab4" type="button" onclick="switchAdminSubTab('settings')" class="px-3 py-2 sm:px-4 sm:py-2.5 font-medium text-slate-500 hover:text-navy-800 whitespace-nowrap">
                     ⚙️ ตั้งค่าระบบ & ประกาศ
                 </button>
             </div>
@@ -533,9 +533,9 @@
                     </div>
 
                     <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold">
-                        <button id="setSubTabBtn1" onclick="switchSettingSubTab('announce')" class="flex-1 py-2 rounded-lg bg-navy-800 text-white transition">📢 ประกาศข่าวสาร</button>
-                        <button id="setSubTabBtn2" onclick="switchSettingSubTab('rules')" class="flex-1 py-2 rounded-lg text-slate-600 transition">📖 กฎระเบียบยืม</button>
-                        <button id="setSubTabBtn3" onclick="switchSettingSubTab('theme')" class="flex-1 py-2 rounded-lg text-slate-600 transition">🖼️ รูปภาพ & โลโก้</button>
+                        <button id="setSubTabBtn1" type="button" onclick="switchSettingSubTab('announce')" class="flex-1 py-2 rounded-lg bg-navy-800 text-white transition">📢 ประกาศข่าวสาร</button>
+                        <button id="setSubTabBtn2" type="button" onclick="switchSettingSubTab('rules')" class="flex-1 py-2 rounded-lg text-slate-600 transition">📖 กฎระเบียบยืม</button>
+                        <button id="setSubTabBtn3" type="button" onclick="switchSettingSubTab('theme')" class="flex-1 py-2 rounded-lg text-slate-600 transition">🖼️ รูปภาพ & โลโก้</button>
                     </div>
 
                     <form onsubmit="handleSaveSettings(event)" class="space-y-4">
@@ -800,14 +800,25 @@
 
         var DEFAULT_RULES_RESTORE = '• ปฏิบัติงานจิตอาสา ช่วยจัดเก็บ ทำความสะอาด หรือดูแลอุปกรณ์กีฬาในห้องพละ\n• ช่วยงานกิจกรรมแข่งกีฬาหรือสนับสนุนการเรียนการสอนรายวิชาสุขศึกษาและพลศึกษา\n• ต้องได้รับการยืนยันและอนุมัติคะแนนคืนจากครูประจำวิชาสุขศึกษาและพลศึกษา หรือครูผู้รับผิดชอบ (ครั้งละ +10 ถึง +20 คะแนน)';
 
-        // Core State
-        var currentUser = JSON.parse(localStorage.getItem('sr_currentUser')) || null;
-        var students = JSON.parse(localStorage.getItem('sr_students')) || [];
-        var equipment = JSON.parse(localStorage.getItem('sr_equipment')) || [];
-        var borrows = JSON.parse(localStorage.getItem('sr_borrows')) || [];
+        // State & Storage Initialization
+        var currentUser = null;
+        try { currentUser = JSON.parse(localStorage.getItem('sr_currentUser')); } catch(e) { currentUser = null; }
+
+        var activeStudentTab = localStorage.getItem('sr_activeStudentTab') || 'borrow';
+        var activeAdminTab = localStorage.getItem('sr_activeAdminTab') || 'requests';
+
+        var students = [];
+        try { students = JSON.parse(localStorage.getItem('sr_students')) || []; } catch(e) { students = []; }
+
+        var equipment = [];
+        try { equipment = JSON.parse(localStorage.getItem('sr_equipment')) || []; } catch(e) { equipment = []; }
+
+        var borrows = [];
+        try { borrows = JSON.parse(localStorage.getItem('sr_borrows')) || []; } catch(e) { borrows = []; }
+
         var isOverdueFilterActive = false;
 
-        var settings = JSON.parse(localStorage.getItem('sr_settings')) || { 
+        var settings = { 
             bgUrl: 'BG.png', 
             logoUrl: 'logo.png',
             announcement: '📢 ยินดีต้อนรับสู่นโยบายการยืม-คืนอุปกรณ์กีฬา! ยืมได้สูงสุด 7 วัน มารับอุปกรณ์ได้ช่วงพักเที่ยงและหลังเลิกเรียนเท่านั้น',
@@ -816,8 +827,36 @@
             ruleRestore: DEFAULT_RULES_RESTORE
         };
 
+        try {
+            var savedSettings = JSON.parse(localStorage.getItem('sr_settings'));
+            if (savedSettings && typeof savedSettings === 'object') {
+                Object.assign(settings, savedSettings);
+            }
+        } catch(e) {}
+
         var cloudWriteQueue = Promise.resolve();
         var cloudSyncBusy = false;
+
+        function getDefaultEquipment() {
+            return [
+                { id: 1, name: 'ลูกฟุตบอล', category: 'ฟุตบอล', totalQty: 10, imageUrl: 'https://images.unsplash.com/photo-1614632537197-38a17061c2bd?w=500&q=80' },
+                { id: 2, name: 'ไม้ปิงปอง', category: 'ปิงปอง', totalQty: 15, imageUrl: 'https://images.unsplash.com/photo-1534158914592-062992fbe900?w=500&q=80' },
+                { id: 3, name: 'ตะกร้อ', category: 'เซปักตะกร้อ', totalQty: 12, imageUrl: 'https://images.unsplash.com/photo-1518605367263-125026c04f98?w=500&q=80' },
+                { id: 4, name: 'ลูกบาสเกตบอล', category: 'บาสเกตบอล', totalQty: 8, imageUrl: 'https://images.unsplash.com/photo-1519861531473-9200262188bf?w=500&q=80' },
+                { id: 5, name: 'กรวยฝึกซ้อม', category: 'อุปกรณ์ซ้อม', totalQty: 30, imageUrl: 'https://images.unsplash.com/photo-1563299796-b729d0af54a5?w=500&q=80' },
+                { id: 6, name: 'ลูกเปตอง', category: 'เปตอง', totalQty: 20, imageUrl: 'https://images.unsplash.com/photo-1589487391730-58f20eb2c308?w=500&q=80' },
+                { id: 7, name: 'เน็ทวอลเลย์บอล', category: 'วอลเลย์บอล', totalQty: 4, imageUrl: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=500&q=80' },
+                { id: 8, name: 'ลูกวอลเลย์บอล', category: 'วอลเลย์บอล', totalQty: 10, imageUrl: 'https://images.unsplash.com/photo-1592656094267-764a45160876?w=500&q=80' },
+                { id: 9, name: 'ลูกฟุตซอล', category: 'ฟุตซอล', totalQty: 8, imageUrl: 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=500&q=80' }
+            ];
+        }
+
+        function initDefaultEquipment() {
+            if (!equipment || equipment.length === 0) {
+                equipment = getDefaultEquipment();
+                saveLocalSnapshot();
+            }
+        }
 
         function escapeHtml(str) {
             if (str === null || str === undefined) return '';
@@ -833,19 +872,24 @@
             return Date.now() + Math.floor(Math.random() * 1000);
         }
 
+        // DOM Loaded Handler
         document.addEventListener('DOMContentLoaded', function() {
             initDefaultEquipment();
-            loadStorage().then(function() {
-                ensureDemoAccount();
-                applySettings();
-                renderApp();
-            });
+            ensureDemoAccount();
+            applySettings();
+            
+            // Immediately render page from local session (Instant Load, No Bounce!)
+            renderApp();
 
+            // Background initial cloud fetch
+            loadStorage();
+
+            // Real-time Background Polling Every 5 Seconds
             window.setInterval(function() {
                 if (!document.hidden && !cloudSyncBusy) {
                     loadStorage();
                 }
-            }, 10000);
+            }, 5000);
         });
 
         function applySettings() {
@@ -877,23 +921,6 @@
             }
         }
 
-        function initDefaultEquipment() {
-            if (equipment.length === 0) {
-                equipment = [
-                    { id: 1, name: 'ลูกฟุตบอล', category: 'ฟุตบอล', totalQty: 10, imageUrl: 'https://images.unsplash.com/photo-1614632537197-38a17061c2bd?w=500&q=80' },
-                    { id: 2, name: 'ไม้ปิงปอง', category: 'ปิงปอง', totalQty: 15, imageUrl: 'https://images.unsplash.com/photo-1534158914592-062992fbe900?w=500&q=80' },
-                    { id: 3, name: 'ตะกร้อ', category: 'เซปักตะกร้อ', totalQty: 12, imageUrl: 'https://images.unsplash.com/photo-1518605367263-125026c04f98?w=500&q=80' },
-                    { id: 4, name: 'ลูกบาสเกตบอล', category: 'บาสเกตบอล', totalQty: 8, imageUrl: 'https://images.unsplash.com/photo-1519861531473-9200262188bf?w=500&q=80' },
-                    { id: 5, name: 'กรวยฝึกซ้อม', category: 'อุปกรณ์ซ้อม', totalQty: 30, imageUrl: 'https://images.unsplash.com/photo-1563299796-b729d0af54a5?w=500&q=80' },
-                    { id: 6, name: 'ลูกเปตอง', category: 'เปตอง', totalQty: 20, imageUrl: 'https://images.unsplash.com/photo-1589487391730-58f20eb2c308?w=500&q=80' },
-                    { id: 7, name: 'เน็ทวอลเลย์บอล', category: 'วอลเลย์บอล', totalQty: 4, imageUrl: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=500&q=80' },
-                    { id: 8, name: 'ลูกวอลเลย์บอล', category: 'วอลเลย์บอล', totalQty: 10, imageUrl: 'https://images.unsplash.com/photo-1592656094267-764a45160876?w=500&q=80' },
-                    { id: 9, name: 'ลูกฟุตซอล', category: 'ฟุตซอล', totalQty: 8, imageUrl: 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=500&q=80' }
-                ];
-                saveLocalSnapshot();
-            }
-        }
-
         function ensureDemoAccount() {
             var demoId = '15686';
             if (!students.some(function(student) { return String(student.studentId).trim() === demoId; })) {
@@ -920,8 +947,14 @@
             localStorage.setItem('sr_equipment', JSON.stringify(equipment || []));
             localStorage.setItem('sr_borrows', JSON.stringify(borrows || []));
             localStorage.setItem('sr_settings', JSON.stringify(settings || {}));
-            if (currentUser) localStorage.setItem('sr_currentUser', JSON.stringify(currentUser));
-            else localStorage.removeItem('sr_currentUser');
+            localStorage.setItem('sr_activeStudentTab', activeStudentTab);
+            localStorage.setItem('sr_activeAdminTab', activeAdminTab);
+
+            if (currentUser) {
+                localStorage.setItem('sr_currentUser', JSON.stringify(currentUser));
+            } else {
+                localStorage.removeItem('sr_currentUser');
+            }
         }
 
         function saveStorage() {
@@ -969,7 +1002,7 @@
                 .then(function(data) {
                     if (data && typeof data === 'object') {
                         if (Array.isArray(data.students)) students = data.students;
-                        if (Array.isArray(data.equipment)) equipment = data.equipment;
+                        if (Array.isArray(data.equipment) && data.equipment.length > 0) equipment = data.equipment;
                         if (Array.isArray(data.borrows)) borrows = data.borrows;
                         if (data.settings && typeof data.settings === 'object') settings = data.settings;
 
@@ -987,7 +1020,7 @@
                     return true;
                 })
                 .catch(function(err) {
-                    console.warn('Cloud sync offline; using local cache.');
+                    console.warn('Cloud sync offline; using local snapshot.');
                     return false;
                 })
                 .finally(function() {
@@ -1064,7 +1097,7 @@
         }
 
         function processRegister(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             var studentId = String(document.getElementById('regId').value).trim();
             var name = document.getElementById('regName').value.trim();
             var grade = document.getElementById('regGrade').value.trim();
@@ -1112,11 +1145,18 @@
             renderApp();
         }
 
+        /* ===== ลบ Auto-submit ใน Admin Login ออก 100% ===== */
         function processLogin(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             var inputId = String(document.getElementById('loginId').value).trim();
             var inputPin = String(document.getElementById('loginPin').value).trim();
 
+            if (!inputId || !inputPin) {
+                alert('กรุณากรอกรหัสประจำตัว และ รหัสผ่าน/PIN ให้ครบถ้วน');
+                return;
+            }
+
+            // ต้องกดยืนยันปุ่ม และ รหัสตรงกับ ADMIN + 8888 เท่านั้น
             if (inputId.toUpperCase() === ADMIN_CREDS.studentId && inputPin === ADMIN_CREDS.pin) {
                 currentUser = ADMIN_CREDS;
                 saveLocalSnapshot();
@@ -1163,6 +1203,9 @@
         }
 
         function switchStudentTab(tab) {
+            activeStudentTab = tab;
+            localStorage.setItem('sr_activeStudentTab', tab);
+
             document.getElementById('stdTabBorrow').classList.add('hidden');
             document.getElementById('stdTabHistory').classList.add('hidden');
             document.getElementById('stdTabScore').classList.add('hidden');
@@ -1234,16 +1277,21 @@
             document.getElementById('studentStatBorrowed').textContent = totalBorrowed;
 
             var select = document.getElementById('borrowEqSelect');
+            var currentEqVal = select.value;
             select.innerHTML = '<option value="">-- เลือกอุปกรณ์ --</option>' + equipment.map(function(eq) {
                 var stock = getEquipmentStockInfo(eq.id);
                 return '<option value="' + eq.id + '">' + escapeHtml(eq.name) + ' (คงเหลือ: ' + stock.available + ' ชิ้น)</option>';
             }).join('');
+            if (currentEqVal) select.value = currentEqVal;
 
             updateAvailableStockBadge();
             initStudentDates();
             renderStudentEquipmentGrid();
             renderStudentHistoryTable();
             renderStudentScoreTab();
+
+            // Retain open tab
+            switchStudentTab(activeStudentTab);
         }
 
         function renderStudentEquipmentGrid() {
@@ -1273,12 +1321,15 @@
         }
 
         function initStudentDates() {
-            var now = new Date();
-            var nowIso = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
-            var returnIso = new Date(now.getTime() + (3 * 24 * 60 * 60 * 1000) - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
-
-            document.getElementById('borrowDate').value = nowIso;
-            document.getElementById('returnDate').value = returnIso;
+            var borrowInput = document.getElementById('borrowDate');
+            var returnInput = document.getElementById('returnDate');
+            if (!borrowInput.value || !returnInput.value) {
+                var now = new Date();
+                var nowIso = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
+                var returnIso = new Date(now.getTime() + (3 * 24 * 60 * 60 * 1000) - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
+                borrowInput.value = nowIso;
+                returnInput.value = returnIso;
+            }
         }
 
         function updateAvailableStockBadge() {
@@ -1293,7 +1344,7 @@
         }
 
         function handleStudentSubmitBorrow(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             var userScore = currentUser.score !== undefined ? currentUser.score : 100;
             if (userScore < 50) {
                 alert('คุณถูกระงับสิทธิ์การยืมเนื่องจากคะแนนพฤติกรรมต่ำกว่า 50 คะแนน');
@@ -1385,7 +1436,7 @@
                 return `<tr class="hover:bg-slate-50 transition">` +
                     `<td class="p-3 font-semibold text-navy-800">` +
                         `<div class="flex items-center gap-2">` +
-                            `<img src="${escapeHtml(b.equipmentImg || DEFAULT_FALLBACK_IMG)}" onerror="handleImgError(this)" class="w-8 h-8 rounded-lg object-cover border border-slate-200 shrink-0 shadow-sm">` +
+                            `<img src="${escapeHtml(getDisplayImageUrl(b.equipmentImg))}" onerror="handleImgError(this)" class="w-8 h-8 rounded-lg object-cover border border-slate-200 shrink-0 shadow-sm">` +
                             `<div>` +
                                 `<div class="font-bold truncate max-w-[130px] sm:max-w-none">${escapeHtml(b.equipmentName)}</div>` +
                                 `<div class="text-[10px] text-amber-700 font-normal mt-0.5">🎯 ${escapeHtml(b.purpose || 'ไม่ระบุวัตถุประสงค์')}</div>` +
@@ -1460,12 +1511,17 @@
             renderAdminEquipmentGrid();
             renderAdminStudents();
 
-            document.getElementById('settingAnnounceText').value = settings.announcement || '';
-            document.getElementById('settingRuleTime').value = settings.ruleTime || DEFAULT_RULES_TIME;
-            document.getElementById('settingRulePenalty').value = settings.rulePenalty || DEFAULT_RULES_PENALTY;
-            document.getElementById('settingRuleRestore').value = settings.ruleRestore || DEFAULT_RULES_RESTORE;
-            document.getElementById('settingBgUrl').value = settings.bgUrl || 'BG.png';
-            document.getElementById('settingLogoUrl').value = settings.logoUrl || 'logo.png';
+            if (!document.getElementById('settingAnnounceText').value) {
+                document.getElementById('settingAnnounceText').value = settings.announcement || '';
+                document.getElementById('settingRuleTime').value = settings.ruleTime || DEFAULT_RULES_TIME;
+                document.getElementById('settingRulePenalty').value = settings.rulePenalty || DEFAULT_RULES_PENALTY;
+                document.getElementById('settingRuleRestore').value = settings.ruleRestore || DEFAULT_RULES_RESTORE;
+                document.getElementById('settingBgUrl').value = settings.bgUrl || 'BG.png';
+                document.getElementById('settingLogoUrl').value = settings.logoUrl || 'logo.png';
+            }
+
+            // Retain open tab
+            switchAdminSubTab(activeAdminTab);
         }
 
         function toggleOverdueFilter() {
@@ -1480,6 +1536,9 @@
         }
 
         function switchAdminSubTab(tab) {
+            activeAdminTab = tab;
+            localStorage.setItem('sr_activeAdminTab', tab);
+
             document.getElementById('adminSubRequests').classList.add('hidden');
             document.getElementById('adminSubEquipment').classList.add('hidden');
             document.getElementById('adminSubStudents').classList.add('hidden');
@@ -1561,7 +1620,7 @@
                     `</td>` +
                     `<td class="p-3 font-semibold text-slate-800">` +
                         `<div class="flex items-center gap-2">` +
-                            `<img src="${escapeHtml(b.equipmentImg || DEFAULT_FALLBACK_IMG)}" onerror="handleImgError(this)" class="w-8 h-8 rounded-lg object-cover border shrink-0">` +
+                            `<img src="${escapeHtml(getDisplayImageUrl(b.equipmentImg))}" onerror="handleImgError(this)" class="w-8 h-8 rounded-lg object-cover border shrink-0">` +
                             `<div>` +
                                 `<span class="font-bold truncate max-w-[120px] sm:max-w-none">${escapeHtml(b.equipmentName)}</span>` +
                                 `<span class="text-amber-600 font-bold ml-1">x${b.quantity}</span>` +
@@ -1576,7 +1635,6 @@
             }).join('');
         }
 
-        /* ===== แก้ไขปุ่มคำขอ Admin ด้วย Template Literals ป้องกัน Syntax Error ===== */
         function getAdminActionButtons(b) {
             if (b.status === 'pending') {
                 return `<button onclick="updateBorrowStatus('${b.id}', 'approved')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] px-2.5 py-1 rounded-lg font-bold shadow transition">อนุมัติ</button>` +
@@ -1623,7 +1681,7 @@
         }
 
         function confirmReturnPenalty(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             var id = document.getElementById('returnBorrowId').value;
             var ptsToDeduct = parseInt(document.getElementById('returnPenaltyPoints').value);
             var note = document.getElementById('returnNote').value.trim();
@@ -1710,7 +1768,7 @@
         }
 
         function handleSaveEquipment(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             var editId = document.getElementById('eqEditId').value;
             var name = document.getElementById('eqName').value.trim();
             var category = document.getElementById('eqCategory').value.trim();
@@ -1809,7 +1867,7 @@
         }
 
         function handleSaveStudentInfo(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             var targetId = document.getElementById('editStudentTargetId').value;
             var fullName = document.getElementById('editStudentFullName').value.trim();
             var grade = document.getElementById('editStudentGrade').value.trim();
@@ -1853,7 +1911,7 @@
         }
 
         function handleSaveStudentScore(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             var id = document.getElementById('editScoreStudentId').value;
             var newScore = parseInt(document.getElementById('newStudentScore').value);
             var reason = document.getElementById('editScoreReason').value.trim();
@@ -1880,7 +1938,7 @@
         }
 
         function handleSaveSettings(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             settings.announcement = document.getElementById('settingAnnounceText').value.trim();
             settings.ruleTime = document.getElementById('settingRuleTime').value.trim();
             settings.rulePenalty = document.getElementById('settingRulePenalty').value.trim();
