@@ -121,7 +121,7 @@
                             <label class="block text-xs font-semibold text-slate-700 mb-1">รหัสผ่าน / PIN</label>
                             <input type="password" id="loginPin" required placeholder="••••••" class="w-full px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-navy-700 outline-none bg-white">
                         </div>
-                        <button type="submit" class="w-full bg-navy-800 hover:bg-navy-900 active:scale-98 text-white font-bold py-3 sm:py-3.5 rounded-xl shadow transition text-xs sm:text-sm flex items-center justify-center gap-2 border-b-2 border-amber-400">
+                        <button type="submit" id="btnLoginSubmit" class="w-full bg-navy-800 hover:bg-navy-900 active:scale-98 text-white font-bold py-3 sm:py-3.5 rounded-xl shadow transition text-xs sm:text-sm flex items-center justify-center gap-2 border-b-2 border-amber-400">
                             <i class="fa-solid fa-key"></i> เข้าสู่ระบบ
                         </button>
                     </form>
@@ -154,7 +154,7 @@
                             <label class="block text-xs font-semibold text-slate-700 mb-1">ตั้งรหัสผ่าน / PIN (4-6 ตัว) <span class="text-red-500">*</span></label>
                             <input type="password" id="regPin" maxlength="6" required placeholder="••••••" class="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-navy-700 outline-none">
                         </div>
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white font-bold py-3 sm:py-3.5 rounded-xl shadow transition text-xs sm:text-sm flex items-center justify-center gap-2">
+                        <button type="submit" id="btnRegisterSubmit" class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white font-bold py-3 sm:py-3.5 rounded-xl shadow transition text-xs sm:text-sm flex items-center justify-center gap-2">
                             <i class="fa-solid fa-user-plus"></i> ยืนยันการลงทะเบียน
                         </button>
                     </form>
@@ -166,7 +166,7 @@
         <!-- ================= VIEW 2: STUDENT PORTAL (USER) ================= -->
         <section id="viewStudent" class="hidden max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-5 w-full space-y-5">
             
-            <!-- Broadcast Announcement Banner from Admin -->
+            <!-- Broadcast Announcement Banner -->
             <div id="studentAnnounceBanner" class="bg-amber-400/90 backdrop-blur-md text-navy-900 px-4 py-2.5 rounded-2xl shadow-sm border border-amber-300 flex items-center gap-2.5 text-xs sm:text-sm font-semibold">
                 <i class="fa-solid fa-bullhorn text-lg shrink-0"></i>
                 <span id="studentAnnounceText" class="truncate"></span>
@@ -192,7 +192,7 @@
                 </div>
             </div>
 
-            <!-- Discipline Score Notice (If Low < 50) -->
+            <!-- Discipline Score Notice (Low < 50) -->
             <div id="suspensionNotice" class="hidden bg-red-500 text-white p-3.5 sm:p-4 rounded-2xl shadow-md border-l-4 border-amber-400 flex items-center gap-3">
                 <i class="fa-solid fa-triangle-exclamation text-xl sm:text-2xl text-amber-300 shrink-0"></i>
                 <div class="text-xs sm:text-sm">
@@ -201,7 +201,7 @@
                 </div>
             </div>
 
-            <!-- STUDENT NAVIGATION TABS (3 PAGES) -->
+            <!-- STUDENT NAVIGATION TABS -->
             <div class="flex border-b border-slate-200/80 space-x-1 sm:space-x-2 text-xs sm:text-sm overflow-x-auto bg-white/60 p-1 rounded-2xl backdrop-blur-sm">
                 <button id="stdNavTab1" onclick="switchStudentTab('borrow')" class="flex-1 py-2.5 px-3 font-bold rounded-xl bg-navy-800 text-white transition whitespace-nowrap text-center">
                     ⚽ 1. ยืมอุปกรณ์กีฬา
@@ -214,9 +214,8 @@
                 </button>
             </div>
 
-            <!-- ================= STUDENT TAB 1: BORROW EQUIPMENT ================= -->
+            <!-- STUDENT TAB 1: BORROW EQUIPMENT -->
             <div id="stdTabBorrow" class="space-y-5">
-                <!-- Stats Bar -->
                 <div class="grid grid-cols-3 gap-2.5 sm:gap-4">
                     <div class="bg-white/90 backdrop-blur-md p-3 sm:p-4 rounded-2xl shadow-sm border border-slate-200/80 text-center sm:text-left">
                         <p class="text-[10px] sm:text-xs text-slate-500 font-semibold">อุปกรณ์ทั้งหมด</p>
@@ -227,7 +226,7 @@
                         <h3 id="studentStatAvailable" class="text-base sm:text-2xl font-bold text-emerald-600 mt-0.5">0</h3>
                     </div>
                     <div class="bg-white/90 backdrop-blur-md p-3 sm:p-4 rounded-2xl shadow-sm border border-slate-200/80 text-center sm:text-left">
-                        <p class="text-[10px] sm:text-xs text-slate-500 font-semibold">กำลังถูกยืม</p>
+                        <p class="text-[10px] sm:text-xs text-slate-500 font-semibold">กำลังถูกยืม / จอง</p>
                         <h3 id="studentStatBorrowed" class="text-base sm:text-2xl font-bold text-amber-600 mt-0.5">0</h3>
                     </div>
                 </div>
@@ -241,7 +240,6 @@
                                 <span>แบบฟอร์มขอยืมอุปกรณ์</span>
                             </h3>
 
-                            <!-- Important Pickup Rules Banner -->
                             <div class="bg-amber-50 border border-amber-200 text-amber-900 p-2.5 rounded-xl text-[11px] leading-relaxed">
                                 📌 <strong>เวลารับอุปกรณ์:</strong> สามารถมารับอุปกรณ์ได้เฉพาะเวลา <strong>พักเที่ยง</strong> และ <strong>หลังเลิกเรียน</strong> เท่านั้น โดยต้องแสดงหลักฐานการอนุมัติในระบบต่อครูผู้ดูแล
                             </div>
@@ -271,7 +269,6 @@
                                         <option value="วัตถุประสงค์อื่นๆ">วัตถุประสงค์อื่นๆ</option>
                                     </select>
                                     
-                                    <!-- Dynamic Other Purpose Input -->
                                     <div id="otherPurposeContainer" class="hidden mt-2">
                                         <input type="text" id="borrowPurposeOther" placeholder="ระบุวัตถุประสงค์อื่นๆ..." class="w-full px-3 py-2 text-xs sm:text-sm border border-amber-300 bg-amber-50/50 rounded-xl focus:ring-2 focus:ring-navy-700 outline-none">
                                     </div>
@@ -297,7 +294,7 @@
                         </div>
                     </div>
 
-                    <!-- Right: Equipment Catalog Cards -->
+                    <!-- Right: Equipment Catalog -->
                     <div class="lg:col-span-2 space-y-3">
                         <div class="flex justify-between items-center px-1">
                             <h3 class="font-bold text-navy-800 text-sm sm:text-base">รายการอุปกรณ์กีฬาพร้อมยืม</h3>
@@ -310,7 +307,7 @@
                 </div>
             </div>
 
-            <!-- ================= STUDENT TAB 2: BORROW HISTORY ================= -->
+            <!-- STUDENT TAB 2: BORROW HISTORY -->
             <div id="stdTabHistory" class="hidden space-y-4">
                 <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/80 p-4 sm:p-5 space-y-4">
                     <div class="flex justify-between items-center pb-3 border-b border-slate-100">
@@ -340,9 +337,8 @@
                 </div>
             </div>
 
-            <!-- ================= STUDENT TAB 3: DISCIPLINE SCORE & RULES ================= -->
+            <!-- STUDENT TAB 3: DISCIPLINE SCORE & RULES -->
             <div id="stdTabScore" class="hidden space-y-5">
-                <!-- Score Overview Card -->
                 <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/80 p-4 sm:p-5 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                     <div class="md:col-span-1 text-center md:text-left border-b md:border-b-0 md:border-r border-slate-100 pb-3 md:pb-0 md:pr-4">
                         <p class="text-xs text-slate-500 font-medium">คะแนนวินัยปัจจุบันของคุณ</p>
@@ -358,9 +354,7 @@
                     </div>
                 </div>
 
-                <!-- Personal Score History Log & Penalty Rules -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                    <!-- Left: Personal Score Log -->
                     <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/80 p-4 sm:p-5 space-y-3">
                         <h4 class="font-bold text-navy-800 text-sm flex items-center gap-2 pb-2 border-b">
                             <i class="fa-solid fa-list-check text-amber-500"></i> ประวัติการเปลี่ยนแปลงคะแนน
@@ -381,7 +375,6 @@
                         </div>
                     </div>
 
-                    <!-- Right: Dynamic Penalty Criteria Breakdown -->
                     <div class="bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/80 p-4 sm:p-5 space-y-3">
                         <h4 class="font-bold text-navy-800 text-sm flex items-center gap-2 pb-2 border-b">
                             <i class="fa-solid fa-gavel text-amber-500"></i> เกณฑ์การหักและฟื้นฟูคะแนน
@@ -408,7 +401,6 @@
         <!-- ================= VIEW 3: ADMIN DASHBOARD ================= -->
         <section id="viewAdmin" class="hidden max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-5 w-full space-y-5">
             
-            <!-- Admin Header Banner -->
             <div class="bg-gradient-to-r from-navy-800 via-navy-700 to-slate-800 text-white rounded-3xl p-4 sm:p-6 shadow-md border-b-4 border-amber-400 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <div>
                     <span class="bg-amber-400 text-navy-900 font-bold text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider">Admin Panel</span>
@@ -420,7 +412,6 @@
                 </button>
             </div>
 
-            <!-- Admin Stats Bar (4 Cards) -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
                 <div class="bg-white/90 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200/80">
                     <p class="text-[11px] sm:text-xs text-slate-500 font-semibold">อุปกรณ์ทั้งหมด</p>
@@ -431,7 +422,7 @@
                     <h3 id="adminStatAvailable" class="text-lg sm:text-2xl font-bold text-emerald-600 mt-0.5">0</h3>
                 </div>
                 <div class="bg-white/90 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200/80">
-                    <p class="text-[11px] sm:text-xs text-slate-500 font-semibold">กำลังถูกยืม</p>
+                    <p class="text-[11px] sm:text-xs text-slate-500 font-semibold">กำลังถูกยืม / จอง</p>
                     <h3 id="adminStatBorrowed" class="text-lg sm:text-2xl font-bold text-indigo-600 mt-0.5">0</h3>
                 </div>
                 <div class="bg-white/90 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200/80">
@@ -440,7 +431,6 @@
                 </div>
             </div>
 
-            <!-- Admin Navigation Tabs -->
             <div class="flex border-b border-slate-200 space-x-1 sm:space-x-2 text-xs sm:text-sm overflow-x-auto bg-white/60 p-1 rounded-2xl">
                 <button id="adminTab1" onclick="switchAdminSubTab('requests')" class="px-3 py-2 sm:px-4 sm:py-2.5 font-bold border-b-2 border-navy-800 text-navy-800 whitespace-nowrap">
                     📋 คำขอยืม & การคืน
@@ -542,7 +532,6 @@
                         </button>
                     </div>
 
-                    <!-- Settings Sub Navigation -->
                     <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold">
                         <button id="setSubTabBtn1" onclick="switchSettingSubTab('announce')" class="flex-1 py-2 rounded-lg bg-navy-800 text-white transition">📢 ประกาศข่าวสาร</button>
                         <button id="setSubTabBtn2" onclick="switchSettingSubTab('rules')" class="flex-1 py-2 rounded-lg text-slate-600 transition">📖 กฎระเบียบยืม</button>
@@ -550,7 +539,6 @@
                     </div>
 
                     <form onsubmit="handleSaveSettings(event)" class="space-y-4">
-                        <!-- SETTING SUB 1: ANNOUNCEMENT -->
                         <div id="setSub1" class="space-y-3">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1">ข้อความประกาศข่าวสารจากแอดมิน (แสดงบนแถบประกาศด้านบนของนักเรียน)</label>
@@ -558,7 +546,6 @@
                             </div>
                         </div>
 
-                        <!-- SETTING SUB 2: RULES EDITOR -->
                         <div id="setSub2" class="hidden space-y-4">
                             <div class="bg-amber-50/60 border border-amber-200 p-3 rounded-xl text-xs text-amber-900 leading-relaxed">
                                 💡 <strong>คำแนะนำ:</strong> ข้อความที่คุณแก้ไขใน 3 ช่องด้านล่างนี้ จะนำไปแสดงผลในป๊อปอัป <strong>"คู่มือ & กฎระเบียบ"</strong> และในหน้าประวัติคะแนนของนักเรียนโดยอัตโนมัติ
@@ -568,25 +555,24 @@
                                 <label class="block text-xs font-bold text-navy-800 mb-1">
                                     1. เงื่อนไขระยะเวลาการยืม การต่อเวลา และการรับอุปกรณ์
                                 </label>
-                                <textarea id="settingRuleTime" rows="4" placeholder="• ยืมได้สูงสุดไม่เกิน 7 วัน&#10;• ต่อเวลาต้องนำอุปกรณ์มาแสดงต่อครู..." class="w-full p-3 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-navy-800 bg-white font-mono leading-relaxed"></textarea>
+                                <textarea id="settingRuleTime" rows="4" class="w-full p-3 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-navy-800 bg-white font-mono leading-relaxed"></textarea>
                             </div>
 
                             <div>
                                 <label class="block text-xs font-bold text-navy-800 mb-1">
                                     2. เกณฑ์การหักคะแนนพฤติกรรม (เริ่มต้น 100 คะแนน)
                                 </label>
-                                <textarea id="settingRulePenalty" rows="7" placeholder="• ส่งคืนล่าช้า 1–2 วัน: หัก 5 คะแนน&#10;• อุปกรณ์ชำรุดเล็กน้อย: หัก 10 คะแนน..." class="w-full p-3 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-navy-800 bg-white font-mono leading-relaxed"></textarea>
+                                <textarea id="settingRulePenalty" rows="7" class="w-full p-3 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-navy-800 bg-white font-mono leading-relaxed"></textarea>
                             </div>
 
                             <div>
                                 <label class="block text-xs font-bold text-navy-800 mb-1">
                                     3. เงื่อนไขการเพิ่ม / ฟื้นฟูคะแนนวินัย
                                 </label>
-                                <textarea id="settingRuleRestore" rows="4" placeholder="• ปฏิบัติงานจิตอาสา ช่วยงานพลศึกษา..." class="w-full p-3 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-navy-800 bg-white font-mono leading-relaxed"></textarea>
+                                <textarea id="settingRuleRestore" rows="4" class="w-full p-3 text-xs border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-navy-800 bg-white font-mono leading-relaxed"></textarea>
                             </div>
                         </div>
 
-                        <!-- SETTING SUB 3: THEME IMAGES -->
                         <div id="setSub3" class="hidden space-y-3">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1">ลิงก์ / ไฟล์รูปภาพพื้นหลังเว็บไซต์ (Background)</label>
@@ -802,68 +788,11 @@
         &copy; ระบบยืม-คืนอุปกรณ์กีฬา โรงเรียนสามร้อยยอดวิทยาคม
     </footer>
 
-
     <!-- JAVASCRIPT CORE LOGIC -->
     <script>
-        // Offline-safe fallback image: if an external image host is slow, blocked or deleted,
-        // every user (student/admin) still sees a stable equipment picture card.
-        var DEFAULT_FALLBACK_IMG = '';
-        function makeFallbackImage(label) {
-            var text = String(label || 'อุปกรณ์กีฬา').slice(0, 24);
-            var emoji = /ตะกร้อ/.test(text) ? '🟤' : /ฟุตบอล|ฟุตซอล/.test(text) ? '⚽' : /บาส/.test(text) ? '🏀' : /วอลเลย์/.test(text) ? '🏐' : /ปิงปอง/.test(text) ? '🏓' : /เปตอง/.test(text) ? '⚪' : /กรวย/.test(text) ? '🔺' : '🏆';
-            var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">'
-                + '<defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#102a43"/><stop offset="1" stop-color="#243b53"/></linearGradient></defs>'
-                + '<rect width="800" height="500" rx="32" fill="url(#g)"/>'
-                + '<text x="400" y="220" text-anchor="middle" font-size="150">' + emoji + '</text>'
-                + '<text x="400" y="355" text-anchor="middle" fill="white" font-size="42" font-family="Arial, sans-serif">' + escapeSvgText(text) + '</text>'
-                + '<text x="400" y="410" text-anchor="middle" fill="#fbbf24" font-size="24" font-family="Arial, sans-serif">รูปสำรองระบบกีฬา</text>'
-                + '</svg>';
-            return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
-        }
-        function escapeSvgText(text) {
-            return String(text).replace(/[&<>"']/g, function(ch) {
-                return ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&apos;'})[ch];
-            });
-        }
-        function makeEquipmentIllustration(label) {
-            var text = String(label || 'อุปกรณ์กีฬา');
-            var drawing = '';
-            if (/ตะกร้อ/.test(text)) {
-                drawing = '<circle cx="400" cy="235" r="135" fill="#d7a85c" stroke="#8a5a2b" stroke-width="12"/>'
-                    + '<path d="M290 155 Q400 235 510 155 M270 235 Q400 315 530 235 M290 315 Q400 235 510 315 M345 110 Q400 235 345 360 M455 110 Q400 235 455 360" fill="none" stroke="#8a5a2b" stroke-width="16" stroke-linecap="round"/>';
-            } else if (/เปตอง/.test(text)) {
-                drawing = '<circle cx="285" cy="270" r="88" fill="#b8bec7" stroke="#667085" stroke-width="10"/>'
-                    + '<circle cx="490" cy="210" r="88" fill="#d5d9df" stroke="#667085" stroke-width="10"/>'
-                    + '<circle cx="395" cy="330" r="28" fill="#d99145" stroke="#8a4f1d" stroke-width="8"/>'
-                    + '<path d="M245 235h80M450 175h80M355 330h80" stroke="#fff" stroke-opacity=".65" stroke-width="8" stroke-linecap="round"/>';
-            } else {
-                return makeFallbackImage(text);
-            }
-            var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">'
-                + '<rect width="800" height="500" rx="32" fill="#eef2f7"/>'
-                + '<path d="M0 390 Q180 340 330 390 T800 385 V500 H0Z" fill="#dce6f2"/>'
-                + drawing
-                + '<text x="400" y="455" text-anchor="middle" fill="#102a43" font-size="34" font-weight="700" font-family="Arial, sans-serif">' + escapeSvgText(text) + '</text>'
-                + '</svg>';
-            return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
-        }
-
-        function repairBuiltInEquipmentImages() {
-            var changed = false;
-            equipment.forEach(function(eq) {
-                if (!eq || !eq.name) return;
-                if (/ตะกร้อ/.test(eq.name) && (!eq.imageUrl || /รูปสำรองระบบกีฬา/.test(decodeURIComponent(String(eq.imageUrl || ''))))) {
-                    eq.imageUrl = makeEquipmentIllustration('ตะกร้อ'); changed = true;
-                }
-                if (/เปตอง/.test(eq.name) && (!eq.imageUrl || /images\.unsplash\.com\/photo-1589487391730-58f20eb2c308/.test(String(eq.imageUrl)))) {
-                    eq.imageUrl = makeEquipmentIllustration('ลูกเปตอง'); changed = true;
-                }
-            });
-            if (changed) saveStorage();
-        }
-
-        DEFAULT_FALLBACK_IMG = makeFallbackImage('อุปกรณ์กีฬา');
+        var DEFAULT_FALLBACK_IMG = 'https://images.unsplash.com/photo-1517649763962-0c6232661a0b?w=500&q=80';
         var ADMIN_CREDS = { studentId: 'ADMIN', pin: '8888', fullName: 'ผู้ดูแลระบบ (งานกีฬา)', role: 'admin' };
+        var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwIrYTQmyD20JjtCTOdo0HFI1mAqL1wK9o02BtUOHo_zDFZF25ZtCqpWH7w4usLmI45/exec";
 
         var DEFAULT_RULES_TIME = '• ยืมอุปกรณ์กีฬาได้สูงสุดครั้งละไม่เกิน 7 วัน\n• หากต้องการต่อเวลา ต้องนำอุปกรณ์ที่ยืมมาแสดงเพื่อยืนยันกับครูประจำวิชาสุขศึกษาและพลศึกษา หรือครูผู้รับผิดชอบเท่านั้น (ไม่อนุญาตให้ต่อเวลาในระบบออนไลน์ทุกกรณี!)\n• เวลารับอุปกรณ์: สามารถมารับอุปกรณ์ที่ยืมได้เฉพาะเวลา "พักเที่ยง" และ "หลังเลิกเรียน" เท่านั้น\n• ต้องนำหลักฐานการยืม (หน้าจออนุมัติในระบบ) มาแสดงต่อครูผู้ดูแลก่อนรับอุปกรณ์กีฬา';
 
@@ -887,12 +816,36 @@
             ruleRestore: DEFAULT_RULES_RESTORE
         };
 
-        // App Initialization
+        var cloudWriteQueue = Promise.resolve();
+        var cloudSyncBusy = false;
+
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function generateUniqueId() {
+            return Date.now() + Math.floor(Math.random() * 1000);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            applySettings();
             initDefaultEquipment();
-            repairBuiltInEquipmentImages();
-            renderApp();
+            loadStorage().then(function() {
+                ensureDemoAccount();
+                applySettings();
+                renderApp();
+            });
+
+            window.setInterval(function() {
+                if (!document.hidden && !cloudSyncBusy) {
+                    loadStorage();
+                }
+            }, 10000);
         });
 
         function applySettings() {
@@ -904,12 +857,10 @@
             if (document.getElementById('navLogoImg')) document.getElementById('navLogoImg').src = logoUrl;
             if (document.getElementById('authLogoImg')) document.getElementById('authLogoImg').src = logoUrl;
 
-            // Apply Announcement
             if (document.getElementById('studentAnnounceText')) {
                 document.getElementById('studentAnnounceText').textContent = settings.announcement || 'ต้อนรับปีการศึกษาใหม่';
             }
 
-            // Apply Dynamic Rules to Modal & Tab 3
             if (document.getElementById('dynamicRuleTime')) document.getElementById('dynamicRuleTime').textContent = settings.ruleTime || DEFAULT_RULES_TIME;
             if (document.getElementById('dynamicRulePenalty')) document.getElementById('dynamicRulePenalty').textContent = settings.rulePenalty || DEFAULT_RULES_PENALTY;
             if (document.getElementById('dynamicRuleRestore')) document.getElementById('dynamicRuleRestore').textContent = settings.ruleRestore || DEFAULT_RULES_RESTORE;
@@ -927,56 +878,139 @@
         }
 
         function initDefaultEquipment() {
-            if (equipment.length === 0 || !equipment[0].imageUrl) {
+            if (equipment.length === 0) {
                 equipment = [
                     { id: 1, name: 'ลูกฟุตบอล', category: 'ฟุตบอล', totalQty: 10, imageUrl: 'https://images.unsplash.com/photo-1614632537197-38a17061c2bd?w=500&q=80' },
                     { id: 2, name: 'ไม้ปิงปอง', category: 'ปิงปอง', totalQty: 15, imageUrl: 'https://images.unsplash.com/photo-1534158914592-062992fbe900?w=500&q=80' },
-                    { id: 3, name: 'ตะกร้อ', category: 'เซปักตะกร้อ', totalQty: 12, imageUrl: makeEquipmentIllustration('ตะกร้อ') },
+                    { id: 3, name: 'ตะกร้อ', category: 'เซปักตะกร้อ', totalQty: 12, imageUrl: 'https://images.unsplash.com/photo-1518605367263-125026c04f98?w=500&q=80' },
                     { id: 4, name: 'ลูกบาสเกตบอล', category: 'บาสเกตบอล', totalQty: 8, imageUrl: 'https://images.unsplash.com/photo-1519861531473-9200262188bf?w=500&q=80' },
                     { id: 5, name: 'กรวยฝึกซ้อม', category: 'อุปกรณ์ซ้อม', totalQty: 30, imageUrl: 'https://images.unsplash.com/photo-1563299796-b729d0af54a5?w=500&q=80' },
-                    { id: 6, name: 'ลูกเปตอง', category: 'เปตอง', totalQty: 20, imageUrl: makeEquipmentIllustration('ลูกเปตอง') },
+                    { id: 6, name: 'ลูกเปตอง', category: 'เปตอง', totalQty: 20, imageUrl: 'https://images.unsplash.com/photo-1589487391730-58f20eb2c308?w=500&q=80' },
                     { id: 7, name: 'เน็ทวอลเลย์บอล', category: 'วอลเลย์บอล', totalQty: 4, imageUrl: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=500&q=80' },
                     { id: 8, name: 'ลูกวอลเลย์บอล', category: 'วอลเลย์บอล', totalQty: 10, imageUrl: 'https://images.unsplash.com/photo-1592656094267-764a45160876?w=500&q=80' },
                     { id: 9, name: 'ลูกฟุตซอล', category: 'ฟุตซอล', totalQty: 8, imageUrl: 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=500&q=80' }
                 ];
+                saveLocalSnapshot();
+            }
+        }
+
+        function ensureDemoAccount() {
+            var demoId = '15686';
+            if (!students.some(function(student) { return String(student.studentId).trim() === demoId; })) {
+                var now = new Date().toISOString();
+                students.push({
+                    studentId: demoId, 
+                    fullName: 'ผู้ใช้ทดลองระบบ', 
+                    grade: 'ทดลองใช้งาน',
+                    roomNumber: '-', 
+                    phone: '-', 
+                    pin: '1234', 
+                    role: 'student', 
+                    score: 100,
+                    scoreLogs: [{ date: now, points: 100, reason: 'บัญชีทดลองระบบ' }],
+                    createdAt: now, 
+                    updatedAt: now
+                });
                 saveStorage();
             }
         }
 
-        function saveStorage() {
-            localStorage.setItem('sr_students', JSON.stringify(students));
-            localStorage.setItem('sr_equipment', JSON.stringify(equipment));
-            localStorage.setItem('sr_borrows', JSON.stringify(borrows));
-            localStorage.setItem('sr_settings', JSON.stringify(settings));
+        function saveLocalSnapshot() {
+            localStorage.setItem('sr_students', JSON.stringify(students || []));
+            localStorage.setItem('sr_equipment', JSON.stringify(equipment || []));
+            localStorage.setItem('sr_borrows', JSON.stringify(borrows || []));
+            localStorage.setItem('sr_settings', JSON.stringify(settings || {}));
             if (currentUser) localStorage.setItem('sr_currentUser', JSON.stringify(currentUser));
+            else localStorage.removeItem('sr_currentUser');
         }
 
-        // Normalize common image links. Google Drive uses a thumbnail endpoint because
-        // share/preview URLs often return an HTML page instead of an actual image.
+        function saveStorage() {
+            saveLocalSnapshot();
+            if (!GOOGLE_SCRIPT_URL) return Promise.resolve();
+
+            var payload = {
+                action: 'save',
+                students: students || [],
+                equipment: equipment || [],
+                borrows: borrows || [],
+                settings: settings || {},
+                updatedAt: new Date().toISOString()
+            };
+
+            cloudWriteQueue = cloudWriteQueue.then(function() {
+                return fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload),
+                    cache: 'no-store'
+                }).then(function(res) {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.json();
+                }).then(function(result) {
+                    if (result && result.success === false) {
+                        console.warn('Cloud warning:', result.message);
+                    }
+                });
+            }).catch(function(err) {
+                console.error('Cloud save fallback to local:', err);
+            });
+            return cloudWriteQueue;
+        }
+
+        function loadStorage() {
+            if (!GOOGLE_SCRIPT_URL || cloudSyncBusy) return Promise.resolve(false);
+            cloudSyncBusy = true;
+
+            return fetch(GOOGLE_SCRIPT_URL + '?t=' + Date.now(), { method: 'GET', cache: 'no-store' })
+                .then(function(res) {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.json();
+                })
+                .then(function(data) {
+                    if (data && typeof data === 'object') {
+                        if (Array.isArray(data.students)) students = data.students;
+                        if (Array.isArray(data.equipment)) equipment = data.equipment;
+                        if (Array.isArray(data.borrows)) borrows = data.borrows;
+                        if (data.settings && typeof data.settings === 'object') settings = data.settings;
+
+                        saveLocalSnapshot();
+
+                        if (currentUser && currentUser.role === 'student') {
+                            var latest = students.find(function(s) {
+                                return String(s.studentId).trim() === String(currentUser.studentId).trim();
+                            });
+                            if (latest) currentUser = latest;
+                        }
+                        applySettings();
+                        renderApp();
+                    }
+                    return true;
+                })
+                .catch(function(err) {
+                    console.warn('Cloud sync offline; using local cache.');
+                    return false;
+                })
+                .finally(function() {
+                    cloudSyncBusy = false;
+                });
+        }
+
         function getDisplayImageUrl(value) {
             var url = String(value || '').trim();
-            if (!url) return makeFallbackImage('อุปกรณ์กีฬา');
-            if (/^data:image\//i.test(url)) return url;
-            if (!/^https?:\//i.test(url)) return url; // allow local files such as takraw.jpg
-
+            if (!url) return DEFAULT_FALLBACK_IMG;
             var match = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/) ||
-                        url.match(/[?&]id=([a-zA-Z0-9_-]+)/) ||
-                        url.match(/drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/);
-            if (match && /drive\.google\.com/i.test(url)) {
-                return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(match[1]) + '&sz=w1600';
-            }
-            // Dropbox shared links sometimes return a preview page; force direct rendering.
-            if (/dropbox\.com/i.test(url)) {
-                return url.replace(/([?&])dl=0/, '$1raw=1').replace(/([?&])dl=1/, '$1raw=1');
+                        url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (match && /drive\.google\.com/.test(url)) {
+                return 'https://drive.google.com/uc?export=view&id=' + match[1];
             }
             return url;
         }
 
         function handleImgError(img) {
-            if (!img || img.dataset.fallbackApplied === '1') return;
-            img.dataset.fallbackApplied = '1';
+            if (img.dataset && img.dataset.fallbackApplied === '1') return;
+            if (img.dataset) img.dataset.fallbackApplied = '1';
             img.onerror = null;
-            img.src = makeFallbackImage(img.dataset.label || 'อุปกรณ์กีฬา');
+            img.src = DEFAULT_FALLBACK_IMG;
         }
 
         function renderApp() {
@@ -1002,9 +1036,6 @@
                     viewAdmin.classList.remove('hidden');
                     renderAdminPortal();
                 } else {
-                    var latest = students.find(function(s) { return String(s.studentId).trim() === String(currentUser.studentId).trim(); });
-                    if (latest) currentUser = latest;
-
                     viewAuth.classList.add('hidden');
                     viewStudent.classList.remove('hidden');
                     viewAdmin.classList.add('hidden');
@@ -1037,7 +1068,7 @@
             var studentId = String(document.getElementById('regId').value).trim();
             var name = document.getElementById('regName').value.trim();
             var grade = document.getElementById('regGrade').value.trim();
-            var roomNo = document.getElementById('regRoomNo').value.trim();
+            var roomNo = String(document.getElementById('regRoomNo').value).trim();
             var phone = document.getElementById('regPhone').value.trim();
             var pin = String(document.getElementById('regPin').value).trim();
 
@@ -1046,11 +1077,19 @@
                 return;
             }
 
-            if (students.some(function(s) { return String(s.studentId).trim() === studentId; })) {
-                alert('รหัสประจำตัวนักเรียนนี้ลงทะเบียนไว้ในระบบแล้ว!');
+            if (!/^\d{4,6}$/.test(pin)) {
+                alert('กรุณาตั้งรหัสผ่าน/PIN เป็นตัวเลข 4-6 หลัก');
                 return;
             }
 
+            if (students.some(function(s) { return String(s.studentId).trim() === studentId; })) {
+                alert('รหัสประจำตัวนักเรียนนี้ลงทะเบียนไว้ในระบบแล้ว!');
+                switchAuthTab('login');
+                document.getElementById('loginId').value = studentId;
+                return;
+            }
+
+            var now = new Date().toISOString();
             var newStudent = { 
                 studentId: studentId, 
                 fullName: name, 
@@ -1060,15 +1099,17 @@
                 pin: pin, 
                 role: 'student',
                 score: 100,
-                scoreLogs: [{ date: new Date().toISOString(), points: 100, reason: 'คะแนนแรกเริ่มเปิดบัญชีนักเรียน' }]
+                scoreLogs: [{ date: now, points: 100, reason: 'คะแนนแรกเริ่มเปิดบัญชีนักเรียน' }],
+                updatedAt: now
             };
 
             students.push(newStudent);
+            currentUser = newStudent;
             saveStorage();
 
-            alert('ลงทะเบียนสำเร็จ! กรุณาเข้าสู่ระบบด้วยรหัสประจำตัวนักเรียน');
-            switchAuthTab('login');
-            document.getElementById('loginId').value = studentId;
+            alert('ลงทะเบียนสำเร็จ! ระบบนำท่านเข้าสู่ระบบเรียบร้อย');
+            document.getElementById('formRegister').reset();
+            renderApp();
         }
 
         function processLogin(e) {
@@ -1078,18 +1119,21 @@
 
             if (inputId.toUpperCase() === ADMIN_CREDS.studentId && inputPin === ADMIN_CREDS.pin) {
                 currentUser = ADMIN_CREDS;
-                saveStorage();
+                saveLocalSnapshot();
                 renderApp();
                 return;
             }
 
-            var found = students.find(function(s) { return String(s.studentId).trim() === inputId && String(s.pin).trim() === inputPin; });
+            var found = students.find(function(s) { 
+                return String(s.studentId).trim() === inputId && String(s.pin).trim() === inputPin; 
+            });
+
             if (found) {
                 currentUser = found;
-                saveStorage();
+                saveLocalSnapshot();
                 renderApp();
             } else {
-                alert('รหัสประจำตัวนักเรียน หรือ รหัสผ่าน ไม่ถูกต้อง!');
+                alert('รหัสประจำตัวนักเรียน หรือ รหัสผ่าน/PIN ไม่ถูกต้อง!');
             }
         }
 
@@ -1106,8 +1150,10 @@
             if (!item) return { total: 0, borrowed: 0, available: 0 };
 
             var borrowedQty = borrows
-                .filter(function(b) { return b.equipmentId === eqId && (b.status === 'issued' || b.status === 'approved'); })
-                .reduce(function(sum, b) { return sum + parseInt(b.quantity); }, 0);
+                .filter(function(b) { 
+                    return b.equipmentId === eqId && (b.status === 'issued' || b.status === 'approved' || b.status === 'pending'); 
+                })
+                .reduce(function(sum, b) { return sum + parseInt(b.quantity || 0); }, 0);
 
             return {
                 total: item.totalQty,
@@ -1116,7 +1162,6 @@
             };
         }
 
-        // STUDENT TABS NAVIGATION
         function switchStudentTab(tab) {
             document.getElementById('stdTabBorrow').classList.add('hidden');
             document.getElementById('stdTabHistory').classList.add('hidden');
@@ -1138,7 +1183,6 @@
             }
         }
 
-        // TOGGLE OTHER PURPOSE INPUT FIELD
         function toggleOtherPurposeInput() {
             var purposeSelect = document.getElementById('borrowPurpose');
             var otherContainer = document.getElementById('otherPurposeContainer');
@@ -1154,7 +1198,6 @@
             }
         }
 
-        // RENDER STUDENT PORTAL
         function renderStudentPortal() {
             document.getElementById('studentProfileName').textContent = currentUser.fullName;
             document.getElementById('studentProfileMeta').textContent = 'รหัส: ' + currentUser.studentId + ' | ชั้น ' + currentUser.grade + ' เลขที่ ' + currentUser.roomNumber;
@@ -1178,7 +1221,6 @@
                 submitBtn.disabled = false;
             }
 
-            // Stats Calculation
             var totalAll = 0, totalAvailable = 0, totalBorrowed = 0;
             equipment.forEach(function(eq) {
                 var stock = getEquipmentStockInfo(eq.id);
@@ -1191,11 +1233,10 @@
             document.getElementById('studentStatAvailable').textContent = totalAvailable;
             document.getElementById('studentStatBorrowed').textContent = totalBorrowed;
 
-            // Render Select Options
             var select = document.getElementById('borrowEqSelect');
             select.innerHTML = '<option value="">-- เลือกอุปกรณ์ --</option>' + equipment.map(function(eq) {
                 var stock = getEquipmentStockInfo(eq.id);
-                return '<option value="' + eq.id + '">' + eq.name + ' (คงเหลือ: ' + stock.available + ' ชิ้น)</option>';
+                return '<option value="' + eq.id + '">' + escapeHtml(eq.name) + ' (คงเหลือ: ' + stock.available + ' ชิ้น)</option>';
             }).join('');
 
             updateAvailableStockBadge();
@@ -1209,19 +1250,19 @@
             var grid = document.getElementById('studentEquipmentGrid');
             grid.innerHTML = equipment.map(function(eq) {
                 var stock = getEquipmentStockInfo(eq.id);
-                return '<div onclick="selectEquipmentToBorrow(' + eq.id + ')" class="bg-white/95 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition cursor-pointer p-3 flex gap-3 items-center">' +
-                    '<img src="' + getDisplayImageUrl(eq.imageUrl) + '" data-label="' + String(eq.name).replace(/"/g, '&quot;') + '" loading="lazy" referrerpolicy="no-referrer" onerror="handleImgError(this)" class="w-16 h-16 rounded-xl object-cover shrink-0 border border-slate-100">' +
-                    '<div class="min-w-0 flex-grow">' +
-                        '<h4 class="font-bold text-navy-800 text-xs sm:text-sm truncate">' + eq.name + '</h4>' +
-                        '<p class="text-[11px] text-slate-500 mt-0.5">หมวด: ' + eq.category + '</p>' +
-                        '<div class="mt-1 flex items-center justify-between">' +
-                            '<span class="text-[10px] font-bold ' + (stock.available > 0 ? 'text-emerald-600' : 'text-red-500') + '">' +
+                return `<div onclick="selectEquipmentToBorrow(${eq.id})" class="bg-white/95 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition cursor-pointer p-3 flex gap-3 items-center">` +
+                    `<img src="${escapeHtml(getDisplayImageUrl(eq.imageUrl))}" onerror="handleImgError(this)" class="w-16 h-16 rounded-xl object-cover shrink-0 border border-slate-100">` +
+                    `<div class="min-w-0 flex-grow">` +
+                        `<h4 class="font-bold text-navy-800 text-xs sm:text-sm truncate">${escapeHtml(eq.name)}</h4>` +
+                        `<p class="text-[11px] text-slate-500 mt-0.5">หมวด: ${escapeHtml(eq.category)}</p>` +
+                        `<div class="mt-1 flex items-center justify-between">` +
+                            `<span class="text-[10px] font-bold ${stock.available > 0 ? 'text-emerald-600' : 'text-red-500'}">` +
                                 (stock.available > 0 ? ('พร้อมยืม ' + stock.available + ' ชิ้น') : 'หมดชั่วคราว') +
-                            '</span>' +
-                            '<span class="text-[10px] bg-navy-800 text-white px-2 py-0.5 rounded-md">เลือกยืม</span>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>';
+                            `</span>` +
+                            `<span class="text-[10px] bg-navy-800 text-white px-2 py-0.5 rounded-md">เลือกยืม</span>` +
+                        `</div>` +
+                    `</div>` +
+                `</div>`;
             }).join('');
         }
 
@@ -1302,7 +1343,7 @@
 
             var eq = equipment.find(function(e) { return e.id === eqId; });
             var newBorrow = {
-                id: Date.now(),
+                id: generateUniqueId(),
                 studentId: currentUser.studentId,
                 studentName: currentUser.fullName,
                 grade: currentUser.grade,
@@ -1316,13 +1357,13 @@
                 borrowTime: borrowDate,
                 returnTime: returnDate,
                 status: 'pending',
-                adminNote: ''
+                adminNote: '',
+                updatedAt: new Date().toISOString()
             };
 
             borrows.unshift(newBorrow);
             saveStorage();
 
-            // Reset Form Dynamic Input
             document.getElementById('borrowPurposeOther').value = '';
             document.getElementById('otherPurposeContainer').classList.add('hidden');
 
@@ -1341,21 +1382,21 @@
             }
 
             tbody.innerHTML = myBorrows.map(function(b) {
-                return '<tr class="hover:bg-slate-50 transition">' +
-                    '<td class="p-3 font-semibold text-navy-800">' +
-                        '<div class="flex items-center gap-2">' +
-                            '<img src="' + getDisplayImageUrl(b.equipmentImg || DEFAULT_FALLBACK_IMG) + '" data-label="' + String(b.equipmentName || 'อุปกรณ์กีฬา').replace(/"/g, '&quot;') + '" loading="lazy" referrerpolicy="no-referrer" onerror="handleImgError(this)" class="w-8 h-8 rounded-lg object-cover border border-slate-200 shrink-0 shadow-sm">' +
-                            '<div>' +
-                                '<div class="font-bold truncate max-w-[130px] sm:max-w-none">' + b.equipmentName + '</div>' +
-                                '<div class="text-[10px] text-amber-700 font-normal mt-0.5">🎯 ' + (b.purpose || 'ไม่ระบุวัตถุประสงค์') + '</div>' +
-                            '</div>' +
-                        '</div>' +
-                    '</td>' +
-                    '<td class="p-3 font-bold text-amber-600">x' + b.quantity + '</td>' +
-                    '<td class="p-3 text-[11px] text-slate-500">' + formatThaiDate(b.borrowTime) + '</td>' +
-                    '<td class="p-3 text-[11px] text-slate-500">' + formatThaiDate(b.returnTime) + '</td>' +
-                    '<td class="p-3 text-center">' + getStatusBadge(b.status) + '</td>' +
-                '</tr>';
+                return `<tr class="hover:bg-slate-50 transition">` +
+                    `<td class="p-3 font-semibold text-navy-800">` +
+                        `<div class="flex items-center gap-2">` +
+                            `<img src="${escapeHtml(b.equipmentImg || DEFAULT_FALLBACK_IMG)}" onerror="handleImgError(this)" class="w-8 h-8 rounded-lg object-cover border border-slate-200 shrink-0 shadow-sm">` +
+                            `<div>` +
+                                `<div class="font-bold truncate max-w-[130px] sm:max-w-none">${escapeHtml(b.equipmentName)}</div>` +
+                                `<div class="text-[10px] text-amber-700 font-normal mt-0.5">🎯 ${escapeHtml(b.purpose || 'ไม่ระบุวัตถุประสงค์')}</div>` +
+                            `</div>` +
+                        `</div>` +
+                    `</td>` +
+                    `<td class="p-3 font-bold text-amber-600">x${b.quantity}</td>` +
+                    `<td class="p-3 text-[11px] text-slate-500">${formatThaiDate(b.borrowTime)}</td>` +
+                    `<td class="p-3 text-[11px] text-slate-500">${formatThaiDate(b.returnTime)}</td>` +
+                    `<td class="p-3 text-center">${getStatusBadge(b.status)}</td>` +
+                `</tr>`;
             }).join('');
         }
 
@@ -1384,17 +1425,16 @@
                 tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-400 text-xs">ไม่มีประวัติการบันทึกคะแนน</td></tr>';
             } else {
                 tbody.innerHTML = logs.slice().reverse().map(function(l) {
-                    return '<tr class="hover:bg-slate-50 transition">' +
-                        '<td class="p-2 text-slate-400 text-[10px]">' + formatThaiDate(l.date) + '</td>' +
-                        '<td class="p-2 font-medium text-slate-700">' + l.reason + '</td>' +
-                        '<td class="p-2 text-right font-bold ' + (l.points >= 0 ? 'text-emerald-600' : 'text-red-500') + '">' +
+                    return `<tr class="hover:bg-slate-50 transition">` +
+                        `<td class="p-2 text-slate-400 text-[10px]">${formatThaiDate(l.date)}</td>` +
+                        `<td class="p-2 font-medium text-slate-700">${escapeHtml(l.reason)}</td>` +
+                        `<td class="p-2 text-right font-bold ${l.points >= 0 ? 'text-emerald-600' : 'text-red-500'}">` +
                             (l.points >= 0 ? ('+' + l.points) : l.points) +
-                        '</td>' +
-                    '</tr>';
+                        `</td>` +
+                    `</tr>`;
                 }).join('');
             }
         }
-
 
         // ================= ADMIN PORTAL LOGIC =================
         function renderAdminPortal() {
@@ -1493,10 +1533,10 @@
 
             var filtered = borrows.filter(function(b) {
                 var pText = b.purpose || '';
-                return b.studentName.toLowerCase().indexOf(keyword) !== -1 || 
-                       b.equipmentName.toLowerCase().indexOf(keyword) !== -1 ||
+                return (b.studentName || '').toLowerCase().indexOf(keyword) !== -1 || 
+                       (b.equipmentName || '').toLowerCase().indexOf(keyword) !== -1 ||
                        pText.toLowerCase().indexOf(keyword) !== -1 ||
-                       String(b.studentId).indexOf(keyword) !== -1;
+                       String(b.studentId || '').indexOf(keyword) !== -1;
             });
 
             if (isOverdueFilterActive) {
@@ -1511,59 +1551,61 @@
             tbody.innerHTML = filtered.map(function(b) {
                 var isOverdue = b.status === 'issued' && new Date(b.returnTime) < now;
 
-                return '<tr class="hover:bg-slate-50 transition ' + (isOverdue ? 'bg-red-50/50' : '') + '">' +
-                    '<td class="p-3">' +
-                        '<div class="font-bold text-navy-800 text-xs sm:text-sm flex items-center gap-1.5">' +
-                            '<span>' + b.studentName + '</span>' +
+                return `<tr class="hover:bg-slate-50 transition ${isOverdue ? 'bg-red-50/50' : ''}">` +
+                    `<td class="p-3">` +
+                        `<div class="font-bold text-navy-800 text-xs sm:text-sm flex items-center gap-1.5">` +
+                            `<span>${escapeHtml(b.studentName)}</span>` +
                             (isOverdue ? '<span class="bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded font-bold animate-pulse">เกินกำหนดคืน</span>' : '') +
-                        '</div>' +
-                        '<div class="text-[11px] text-slate-500">ID: ' + b.studentId + ' | ' + b.grade + ' (เลขที่ ' + b.roomNumber + ') | Tel: ' + b.phone + '</div>' +
-                    '</td>' +
-                    '<td class="p-3 font-semibold text-slate-800">' +
-                        '<div class="flex items-center gap-2">' +
-                            '<img src="' + getDisplayImageUrl(b.equipmentImg || DEFAULT_FALLBACK_IMG) + '" data-label="' + String(b.equipmentName || 'อุปกรณ์กีฬา').replace(/"/g, '&quot;') + '" loading="lazy" referrerpolicy="no-referrer" onerror="handleImgError(this)" class="w-8 h-8 rounded-lg object-cover border shrink-0">' +
-                            '<div>' +
-                                '<span class="font-bold truncate max-w-[120px] sm:max-w-none">' + b.equipmentName + '</span>' +
-                                '<span class="text-amber-600 font-bold ml-1">x' + b.quantity + '</span>' +
-                                '<div class="text-[10px] text-indigo-700 font-normal mt-0.5">🎯 ' + (b.purpose || 'ทั่วไป') + '</div>' +
-                            '</div>' +
-                        '</div>' +
-                    '</td>' +
-                    '<td class="p-3 text-xs ' + (isOverdue ? 'text-red-600 font-bold' : 'text-slate-500') + '">' + formatThaiDate(b.returnTime) + '</td>' +
-                    '<td class="p-3 text-center">' + getStatusBadge(b.status) + '</td>' +
-                    '<td class="p-3 text-right">' + getAdminActionButtons(b) + '</td>' +
-                '</tr>';
+                        `</div>` +
+                        `<div class="text-[11px] text-slate-500">ID: ${escapeHtml(b.studentId)} | ${escapeHtml(b.grade)} (เลขที่ ${escapeHtml(b.roomNumber)}) | Tel: ${escapeHtml(b.phone)}</div>` +
+                    `</td>` +
+                    `<td class="p-3 font-semibold text-slate-800">` +
+                        `<div class="flex items-center gap-2">` +
+                            `<img src="${escapeHtml(b.equipmentImg || DEFAULT_FALLBACK_IMG)}" onerror="handleImgError(this)" class="w-8 h-8 rounded-lg object-cover border shrink-0">` +
+                            `<div>` +
+                                `<span class="font-bold truncate max-w-[120px] sm:max-w-none">${escapeHtml(b.equipmentName)}</span>` +
+                                `<span class="text-amber-600 font-bold ml-1">x${b.quantity}</span>` +
+                                `<div class="text-[10px] text-indigo-700 font-normal mt-0.5">🎯 ${escapeHtml(b.purpose || 'ทั่วไป')}</div>` +
+                            `</div>` +
+                        `</div>` +
+                    `</td>` +
+                    `<td class="p-3 text-xs ${isOverdue ? 'text-red-600 font-bold' : 'text-slate-500'}">${formatThaiDate(b.returnTime)}</td>` +
+                    `<td class="p-3 text-center">${getStatusBadge(b.status)}</td>` +
+                    `<td class="p-3 text-right">${getAdminActionButtons(b)}</td>` +
+                `</tr>`;
             }).join('');
         }
 
+        /* ===== แก้ไขปุ่มคำขอ Admin ด้วย Template Literals ป้องกัน Syntax Error ===== */
         function getAdminActionButtons(b) {
             if (b.status === 'pending') {
-                return '<button onclick="updateBorrowStatus(' + b.id + ', \'approved\')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] px-2.5 py-1 rounded-lg font-bold shadow transition">อนุมัติ</button>' +
-                       '<button onclick="updateBorrowStatus(' + b.id + ', \'rejected\')" class="bg-red-600 hover:bg-red-700 text-white text-[11px] px-2.5 py-1 rounded-lg font-bold shadow transition ml-1">ปฏิเสธ</button>';
+                return `<button onclick="updateBorrowStatus('${b.id}', 'approved')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] px-2.5 py-1 rounded-lg font-bold shadow transition">อนุมัติ</button>` +
+                       `<button onclick="updateBorrowStatus('${b.id}', 'rejected')" class="bg-red-600 hover:bg-red-700 text-white text-[11px] px-2.5 py-1 rounded-lg font-bold shadow transition ml-1">ปฏิเสธ</button>`;
             } else if (b.status === 'approved') {
-                return '<button onclick="updateBorrowStatus(' + b.id + ', \'issued\')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] px-2.5 py-1 rounded-lg font-bold shadow transition">จ่ายอุปกรณ์</button>';
+                return `<button onclick="updateBorrowStatus('${b.id}', 'issued')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] px-2.5 py-1 rounded-lg font-bold shadow transition">จ่ายอุปกรณ์</button>`;
             } else if (b.status === 'issued') {
-                return '<button onclick="openReturnPenaltyModal(' + b.id + ')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] px-2.5 py-1 rounded-lg font-bold shadow transition">ตรวจรับคืน</button>';
+                return `<button onclick="openReturnPenaltyModal('${b.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] px-2.5 py-1 rounded-lg font-bold shadow transition">ตรวจรับคืน</button>`;
             } else {
-                return '<span class="text-xs text-slate-400">-</span>';
+                return `<span class="text-xs text-slate-400">-</span>`;
             }
         }
 
         function updateBorrowStatus(id, newStatus) {
-            var item = borrows.find(function(b) { return b.id === id; });
+            var item = borrows.find(function(b) { return String(b.id) === String(id); });
             if (item) {
                 if (newStatus === 'rejected') {
                     var reason = prompt('ระบุเหตุผลในการไม่อนุมัติคำขอ:');
                     if (reason !== null) item.adminNote = reason;
                 }
                 item.status = newStatus;
+                item.updatedAt = new Date().toISOString();
                 saveStorage();
                 renderAdminPortal();
             }
         }
 
         function openReturnPenaltyModal(id) {
-            var b = borrows.find(function(x) { return x.id === id; });
+            var b = borrows.find(function(x) { return String(x.id) === String(id); });
             if (!b) return;
 
             document.getElementById('returnBorrowId').value = id;
@@ -1582,20 +1624,22 @@
 
         function confirmReturnPenalty(e) {
             e.preventDefault();
-            var id = parseInt(document.getElementById('returnBorrowId').value);
+            var id = document.getElementById('returnBorrowId').value;
             var ptsToDeduct = parseInt(document.getElementById('returnPenaltyPoints').value);
             var note = document.getElementById('returnNote').value.trim();
             var selText = document.getElementById('returnCondition').options[document.getElementById('returnCondition').selectedIndex].text;
             
-            var b = borrows.find(function(x) { return x.id === id; });
+            var b = borrows.find(function(x) { return String(x.id) === String(id); });
             if (b) {
                 b.status = 'returned';
+                b.updatedAt = new Date().toISOString();
                 
                 if (ptsToDeduct > 0) {
                     var st = students.find(function(s) { return String(s.studentId).trim() === String(b.studentId).trim(); });
                     if (st) {
                         var currentScore = st.score !== undefined ? st.score : 100;
                         st.score = Math.max(0, currentScore - ptsToDeduct);
+                        st.updatedAt = new Date().toISOString();
                         if (!st.scoreLogs) st.scoreLogs = [];
                         st.scoreLogs.push({
                             date: new Date().toISOString(),
@@ -1616,29 +1660,29 @@
             var grid = document.getElementById('adminEquipmentGrid');
             grid.innerHTML = equipment.map(function(eq) {
                 var stock = getEquipmentStockInfo(eq.id);
-                return '<div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition overflow-hidden flex flex-col">' +
-                    '<div class="h-40 w-full bg-slate-100 relative overflow-hidden">' +
-                        '<img src="' + getDisplayImageUrl(eq.imageUrl) + '" data-label="' + String(eq.name).replace(/"/g, '&quot;') + '" loading="lazy" referrerpolicy="no-referrer" onerror="handleImgError(this)" class="w-full h-full object-cover">' +
-                        '<span class="absolute top-2.5 right-2.5 bg-navy-800/80 backdrop-blur-md text-amber-300 text-[11px] px-2.5 py-0.5 rounded-full font-bold shadow">' +
-                            eq.category +
-                        '</span>' +
-                    '</div>' +
-                    '<div class="p-3.5 flex-grow flex flex-col justify-between space-y-2">' +
-                        '<div>' +
-                            '<h4 class="font-bold text-navy-800 text-sm sm:text-base leading-snug">' + eq.name + '</h4>' +
-                            '<p class="text-[11px] text-slate-500 mt-0.5 font-medium">คลังทั้งหมด: <span class="font-bold text-slate-700">' + eq.totalQty + ' ชิ้น</span></p>' +
-                        '</div>' +
-                        '<div class="flex items-center justify-between pt-2 border-t border-slate-100">' +
-                            '<span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-200">' +
-                                'พร้อมยืม ' + stock.available + ' ชิ้น' +
-                            '</span>' +
-                            '<div class="flex items-center gap-1">' +
-                                '<button onclick="openEditEquipmentModal(' + eq.id + ')" class="text-amber-600 hover:bg-amber-50 p-1.5 rounded-lg text-xs transition"><i class="fa-solid fa-pen"></i></button>' +
-                                '<button onclick="deleteEquipment(' + eq.id + ')" class="text-red-600 hover:bg-red-50 p-1.5 rounded-lg text-xs transition"><i class="fa-solid fa-trash"></i></button>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>';
+                return `<div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition overflow-hidden flex flex-col">` +
+                    `<div class="h-40 w-full bg-slate-100 relative overflow-hidden">` +
+                        `<img src="${escapeHtml(getDisplayImageUrl(eq.imageUrl))}" onerror="handleImgError(this)" class="w-full h-full object-cover">` +
+                        `<span class="absolute top-2.5 right-2.5 bg-navy-800/80 backdrop-blur-md text-amber-300 text-[11px] px-2.5 py-0.5 rounded-full font-bold shadow">` +
+                            escapeHtml(eq.category) +
+                        `</span>` +
+                    `</div>` +
+                    `<div class="p-3.5 flex-grow flex flex-col justify-between space-y-2">` +
+                        `<div>` +
+                            `<h4 class="font-bold text-navy-800 text-sm sm:text-base leading-snug">${escapeHtml(eq.name)}</h4>` +
+                            `<p class="text-[11px] text-slate-500 mt-0.5 font-medium">คลังทั้งหมด: <span class="font-bold text-slate-700">${eq.totalQty} ชิ้น</span></p>` +
+                        `</div>` +
+                        `<div class="flex items-center justify-between pt-2 border-t border-slate-100">` +
+                            `<span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-200">` +
+                                `พร้อมยืม ${stock.available} ชิ้น` +
+                            `</span>` +
+                            `<div class="flex items-center gap-1">` +
+                                `<button onclick="openEditEquipmentModal('${eq.id}')" class="text-amber-600 hover:bg-amber-50 p-1.5 rounded-lg text-xs transition"><i class="fa-solid fa-pen"></i></button>` +
+                                `<button onclick="deleteEquipment('${eq.id}')" class="text-red-600 hover:bg-red-50 p-1.5 rounded-lg text-xs transition"><i class="fa-solid fa-trash"></i></button>` +
+                            `</div>` +
+                        `</div>` +
+                    `</div>` +
+                `</div>`;
             }).join('');
         }
 
@@ -1653,7 +1697,7 @@
         }
 
         function openEditEquipmentModal(id) {
-            var eq = equipment.find(function(e) { return e.id === id; });
+            var eq = equipment.find(function(e) { return String(e.id) === String(id); });
             if (eq) {
                 document.getElementById('modalEquipmentTitle').textContent = 'แก้ไขข้อมูลอุปกรณ์';
                 document.getElementById('eqEditId').value = eq.id;
@@ -1674,7 +1718,7 @@
             var totalQty = parseInt(document.getElementById('eqTotalQty').value);
 
             if (editId) {
-                var eq = equipment.find(function(e) { return e.id === parseInt(editId); });
+                var eq = equipment.find(function(e) { return String(e.id) === String(editId); });
                 if (eq) {
                     eq.name = name;
                     eq.category = category;
@@ -1682,7 +1726,7 @@
                     eq.totalQty = totalQty;
                 }
             } else {
-                var newEq = { id: Date.now(), name: name, category: category, imageUrl: imageUrl, totalQty: totalQty };
+                var newEq = { id: generateUniqueId(), name: name, category: category, imageUrl: imageUrl, totalQty: totalQty };
                 equipment.push(newEq);
             }
 
@@ -1693,7 +1737,7 @@
 
         function deleteEquipment(id) {
             if (confirm('คุณต้องการลบอุปกรณ์นี้ออกจากระบบใช่หรือไม่?')) {
-                equipment = equipment.filter(function(e) { return e.id !== id; });
+                equipment = equipment.filter(function(e) { return String(e.id) !== String(id); });
                 saveStorage();
                 renderAdminPortal();
             }
@@ -1704,8 +1748,8 @@
             var keyword = document.getElementById('adminSearchStudent').value.toLowerCase();
 
             var filtered = students.filter(function(s) {
-                return s.fullName.toLowerCase().indexOf(keyword) !== -1 || 
-                       String(s.studentId).indexOf(keyword) !== -1;
+                return (s.fullName || '').toLowerCase().indexOf(keyword) !== -1 || 
+                       String(s.studentId || '').indexOf(keyword) !== -1;
             });
 
             if (filtered.length === 0) {
@@ -1717,35 +1761,35 @@
                 var score = s.score !== undefined ? s.score : 100;
                 var isBanned = score < 50;
 
-                return '<tr class="hover:bg-slate-50 transition">' +
-                    '<td class="p-3 font-bold text-navy-800">' + s.studentId + '</td>' +
-                    '<td class="p-3 font-semibold">' + s.fullName + '</td>' +
-                    '<td class="p-3 text-slate-500">' + s.grade + ' (เลขที่ ' + s.roomNumber + ')</td>' +
-                    '<td class="p-3 text-center">' +
-                        '<span class="font-bold ' + (score >= 80 ? 'text-emerald-600' : score >= 50 ? 'text-amber-600' : 'text-red-600') + '">' +
-                            '⭐ ' + score +
-                        '</span>' +
-                    '</td>' +
-                    '<td class="p-3 text-center">' +
+                return `<tr class="hover:bg-slate-50 transition">` +
+                    `<td class="p-3 font-bold text-navy-800">${escapeHtml(s.studentId)}</td>` +
+                    `<td class="p-3 font-semibold">${escapeHtml(s.fullName)}</td>` +
+                    `<td class="p-3 text-slate-500">${escapeHtml(s.grade)} (เลขที่ ${escapeHtml(s.roomNumber)})</td>` +
+                    `<td class="p-3 text-center">` +
+                        `<span class="font-bold ${score >= 80 ? 'text-emerald-600' : score >= 50 ? 'text-amber-600' : 'text-red-600'}">` +
+                            `⭐ ${score}` +
+                        `</span>` +
+                    `</td>` +
+                    `<td class="p-3 text-center">` +
                         (isBanned 
                             ? '<span class="bg-red-100 text-red-700 px-2.5 py-0.5 rounded-full text-[10px] font-bold">🚫 ระงับสิทธิ์</span>'
                             : '<span class="bg-emerald-100 text-emerald-700 px-2.5 py-0.5 rounded-full text-[10px] font-bold">✅ ปกติ</span>'
                         ) +
-                    '</td>' +
-                    '<td class="p-3 text-right">' +
-                        '<div class="flex justify-end gap-1">' +
-                            '<button onclick="openEditScoreModal(\'' + s.studentId + '\')" class="bg-amber-500 hover:bg-amber-600 text-white text-[10px] px-2.5 py-1 rounded-lg font-bold shadow transition">' +
-                                '<i class="fa-solid fa-star"></i> แก้คะแนน' +
-                            '</button>' +
-                            '<button onclick="openEditStudentModal(\'' + s.studentId + '\')" class="bg-slate-700 hover:bg-slate-800 text-white text-[10px] px-2.5 py-1 rounded-lg font-bold shadow transition">' +
-                                '<i class="fa-solid fa-user-pen"></i> แก้ไข/PIN' +
-                            '</button>' +
-                            '<button onclick="deleteStudent(\'' + s.studentId + '\')" class="bg-red-600 hover:bg-red-700 text-white text-[10px] px-2 py-1 rounded-lg font-bold shadow transition">' +
-                                '<i class="fa-solid fa-trash"></i>' +
-                            '</button>' +
-                        '</div>' +
-                    '</td>' +
-                '</tr>';
+                    `</td>` +
+                    `<td class="p-3 text-right">` +
+                        `<div class="flex justify-end gap-1">` +
+                            `<button onclick="openEditScoreModal('${escapeHtml(s.studentId)}')" class="bg-amber-500 hover:bg-amber-600 text-white text-[10px] px-2.5 py-1 rounded-lg font-bold shadow transition">` +
+                                `<i class="fa-solid fa-star"></i> แก้คะแนน` +
+                            `</button>` +
+                            `<button onclick="openEditStudentModal('${escapeHtml(s.studentId)}')" class="bg-slate-700 hover:bg-slate-800 text-white text-[10px] px-2.5 py-1 rounded-lg font-bold shadow transition">` +
+                                `<i class="fa-solid fa-user-pen"></i> แก้ไข/PIN` +
+                            `</button>` +
+                            `<button onclick="deleteStudent('${escapeHtml(s.studentId)}')" class="bg-red-600 hover:bg-red-700 text-white text-[10px] px-2 py-1 rounded-lg font-bold shadow transition">` +
+                                `<i class="fa-solid fa-trash"></i>` +
+                            `</button>` +
+                        `</div>` +
+                    `</td>` +
+                `</tr>`;
             }).join('');
         }
 
@@ -1780,6 +1824,7 @@
                 st.roomNumber = roomNo;
                 st.phone = phone;
                 if (newPin) st.pin = newPin;
+                st.updatedAt = new Date().toISOString();
 
                 saveStorage();
                 closeModal('modalEditStudent');
@@ -1818,6 +1863,7 @@
                 var oldScore = st.score !== undefined ? st.score : 100;
                 var diff = newScore - oldScore;
                 st.score = newScore;
+                st.updatedAt = new Date().toISOString();
                 
                 if (!st.scoreLogs) st.scoreLogs = [];
                 st.scoreLogs.push({
@@ -1861,12 +1907,12 @@
 
             var doc = reportWin.document;
             doc.open();
-            doc.write('<!DOCTYPE html><html><head><title>รายงานประวัติการยืม-คืน<\/title>');
-            doc.write('<style>body{font-family:sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ccc;padding:8px;text-align:left;}th{background:#f2f2f2;}<\/style>');
-            doc.write('<\/head><body>');
-            doc.write('<h2>รายงานประวัติการยืม-คืนอุปกรณ์กีฬา<\/h2>');
-            doc.write('<p>โรงเรียนสามร้อยยอดวิทยาคม | ข้อมูล ณ วันที่ ' + new Date().toLocaleDateString('th-TH') + '<\/p>');
-            doc.write('<table><thead><tr><th>ลำดับ<\/th><th>ชื่อนักเรียน<\/th><th>ชั้น/เลขที่<\/th><th>อุปกรณ์<\/th><th>จำนวน<\/th><th>วัตถุประสงค์<\/th><th>วันขอยืม<\/th><th>กำหนดคืน<\/th><th>สถานะ<\/th><\/tr><\/thead><tbody>');
+            doc.write('<!DOCTYPE html><html><head><title>รายงานประวัติการยืม-คืน</title>');
+            doc.write('<style>body{font-family:sans-serif;padding:20px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ccc;padding:8px;text-align:left;}th{background:#f2f2f2;}</style>');
+            doc.write('</head><body>');
+            doc.write('<h2>รายงานประวัติการยืม-คืนอุปกรณ์กีฬา</h2>');
+            doc.write('<p>โรงเรียนสามร้อยยอดวิทยาคม | ข้อมูล ณ วันที่ ' + new Date().toLocaleDateString('th-TH') + '</p>');
+            doc.write('<table><thead><tr><th>ลำดับ</th><th>ชื่อนักเรียน</th><th>ชั้น/เลขที่</th><th>อุปกรณ์</th><th>จำนวน</th><th>วัตถุประสงค์</th><th>วันขอยืม</th><th>กำหนดคืน</th><th>สถานะ</th></tr></thead><tbody>');
 
             for (var i = 0; i < borrows.length; i++) {
                 var b = borrows[i];
@@ -1875,19 +1921,19 @@
                                  b.status === 'issued' ? 'กำลังยืม' : 
                                  b.status === 'returned' ? 'คืนแล้ว' : 'ไม่อนุมัติ';
                 doc.write('<tr>');
-                doc.write('<td>' + (i + 1) + '<\/td>');
-                doc.write('<td>' + b.studentName + ' (ID: ' + b.studentId + ')<\/td>');
-                doc.write('<td>' + b.grade + ' / ' + b.roomNumber + '<\/td>');
-                doc.write('<td>' + b.equipmentName + '<\/td>');
-                doc.write('<td>' + b.quantity + '<\/td>');
-                doc.write('<td>' + (b.purpose || '-') + '<\/td>');
-                doc.write('<td>' + formatThaiDate(b.borrowTime) + '<\/td>');
-                doc.write('<td>' + formatThaiDate(b.returnTime) + '<\/td>');
-                doc.write('<td>' + statusText + '<\/td>');
-                doc.write('<\/tr>');
+                doc.write('<td>' + (i + 1) + '</td>');
+                doc.write('<td>' + escapeHtml(b.studentName) + ' (ID: ' + escapeHtml(b.studentId) + ')</td>');
+                doc.write('<td>' + escapeHtml(b.grade) + ' / ' + escapeHtml(b.roomNumber) + '</td>');
+                doc.write('<td>' + escapeHtml(b.equipmentName) + '</td>');
+                doc.write('<td>' + b.quantity + '</td>');
+                doc.write('<td>' + escapeHtml(b.purpose || '-') + '</td>');
+                doc.write('<td>' + formatThaiDate(b.borrowTime) + '</td>');
+                doc.write('<td>' + formatThaiDate(b.returnTime) + '</td>');
+                doc.write('<td>' + statusText + '</td>');
+                doc.write('</tr>');
             }
 
-            doc.write('<\/tbody><\/table><\/body><\/html>');
+            doc.write('</tbody></table></body></html>');
             doc.close();
             reportWin.print();
         }
@@ -1905,6 +1951,7 @@
         function formatThaiDate(dtStr) {
             if (!dtStr) return '-';
             var dt = new Date(dtStr);
+            if (isNaN(dt.getTime())) return '-';
             return dt.toLocaleString('th-TH', {
                 day: 'numeric',
                 month: 'short',
@@ -1917,269 +1964,19 @@
         function getStatusBadge(status) {
             switch(status) {
                 case 'pending':
-                    return '<span class="bg-amber-100 text-amber-800 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold inline-block">⏳ รออนุมัติ<\/span>';
+                    return '<span class="bg-amber-100 text-amber-800 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold inline-block">⏳ รออนุมัติ</span>';
                 case 'approved':
-                    return '<span class="bg-blue-100 text-blue-800 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold inline-block">👍 อนุมัติแล้ว (รอรับ)<\/span>';
+                    return '<span class="bg-blue-100 text-blue-800 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold inline-block">👍 อนุมัติแล้ว (รอรับ)</span>';
                 case 'issued':
-                    return '<span class="bg-indigo-100 text-indigo-800 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold inline-block">⚽ กำลังยืม<\/span>';
+                    return '<span class="bg-indigo-100 text-indigo-800 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold inline-block">⚽ กำลังยืม</span>';
                 case 'returned':
-                    return '<span class="bg-emerald-100 text-emerald-800 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold inline-block">✅ คืนแล้ว<\/span>';
+                    return '<span class="bg-emerald-100 text-emerald-800 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold inline-block">✅ คืนแล้ว</span>';
                 case 'rejected':
-                    return '<span class="bg-red-100 text-red-800 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold inline-block">❌ ไม่อนุมัติ<\/span>';
+                    return '<span class="bg-red-100 text-red-800 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold inline-block">❌ ไม่อนุมัติ</span>';
                 default:
                     return '-';
             }
         }
-
-        // ===== PATCH: reliable local/cloud persistence + stable session =====
-        var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwIrYTQmyD20JjtCTOdo0HFI1mAqL1wK9o02BtUOHo_zDFZF25ZtCqpWH7w4usLmI45/exec";
-        var cloudWriteQueue = Promise.resolve();
-        var cloudReady = false;
-        var cloudSyncBusy = false;
-        var lastCloudSync = 0;
-
-        function saveLocalSnapshot() {
-            localStorage.setItem('sr_students', JSON.stringify(students || []));
-            localStorage.setItem('sr_equipment', JSON.stringify(equipment || []));
-            localStorage.setItem('sr_borrows', JSON.stringify(borrows || []));
-            localStorage.setItem('sr_settings', JSON.stringify(settings || {}));
-            if (currentUser) localStorage.setItem('sr_currentUser', JSON.stringify(currentUser));
-            else localStorage.removeItem('sr_currentUser');
-        }
-
-        function saveStorage() {
-            saveLocalSnapshot(); // local-first: never wait for network
-            if (!GOOGLE_SCRIPT_URL) return;
-            var payload = {
-                action: 'save',
-                students: students || [],
-                equipment: equipment || [],
-                borrows: borrows || [],
-                settings: settings || {},
-                updatedAt: new Date().toISOString()
-            };
-            // Serialize writes so an older request cannot overwrite a newer change.
-            cloudWriteQueue = cloudWriteQueue.then(function () {
-                return fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload),
-                    cache: 'no-store'
-                }).then(function (res) {
-                    if (!res.ok) throw new Error('HTTP ' + res.status);
-                    return res.text();
-                }).then(function (text) {
-                    var result;
-                    try { result = JSON.parse(text); } catch (_) { result = { raw: text }; }
-                    if (result && result.success === false) throw new Error(result.message || 'Cloud rejected save');
-                    lastCloudSync = Date.now();
-                    console.info('Cloud save complete', result);
-                });
-            }).catch(function (err) {
-                console.error('Cloud save failed; local copy is safe:', err);
-            });
-            return cloudWriteQueue;
-        }
-
-        function mergeByKey(cloudList, localList, keyName, preferLocalOnTie) {
-            var map = Object.create(null);
-            function stamp(item) {
-                var value = item && (item.updatedAt || item.createdAt);
-                var time = value ? Date.parse(value) : 0;
-                return isFinite(time) ? time : 0;
-            }
-            // Merge by ID. The record with the newest timestamp wins; when timestamps
-            // are absent/equal, keep the local copy to avoid reverting a recent local PIN.
-            (Array.isArray(localList) ? localList : []).forEach(function (item) {
-                if (!item || item[keyName] == null) return;
-                map[String(item[keyName]).trim()] = item;
-            });
-            (Array.isArray(cloudList) ? cloudList : []).forEach(function (item) {
-                if (!item || item[keyName] == null) return;
-                var key = String(item[keyName]).trim();
-                var local = map[key];
-                if (!local || stamp(item) > stamp(local)) map[key] = item;
-                else if (stamp(item) === stamp(local)) map[key] = preferLocalOnTie ? Object.assign({}, item, local) : Object.assign({}, local, item);
-            });
-            return Object.keys(map).map(function (key) { return map[key]; });
-        }
-
-        function loadStorage(options) {
-            options = options || {};
-            if (!GOOGLE_SCRIPT_URL) return Promise.resolve(false);
-            if (cloudSyncBusy) return Promise.resolve(false);
-            cloudSyncBusy = true;
-            var localStudents = JSON.parse(localStorage.getItem('sr_students') || '[]');
-            var localBorrows = JSON.parse(localStorage.getItem('sr_borrows') || '[]');
-            return fetch(GOOGLE_SCRIPT_URL + '?t=' + Date.now(), { method: 'GET', cache: 'no-store' })
-                .then(function (res) {
-                    if (!res.ok) throw new Error('HTTP ' + res.status);
-                    return res.json();
-                })
-                .then(function (data) {
-                    if (!data || typeof data !== 'object') throw new Error('Invalid cloud response');
-                    students = mergeByKey(data.students, localStudents, 'studentId', true);
-                    borrows = mergeByKey(data.borrows, JSON.parse(localStorage.getItem('sr_borrows') || '[]'), 'id', false);
-                    if (Array.isArray(data.equipment) && data.equipment.length) equipment = data.equipment;
-                    if (data.settings && typeof data.settings === 'object') settings = data.settings;
-                    saveLocalSnapshot();
-                    cloudReady = true;
-                    lastCloudSync = Date.now();
-
-                    // Keep the current screen and selected tab. Refresh only its contents.
-                    if (currentUser) {
-                        if (currentUser.role === 'student') {
-                            var latest = students.find(function (s) {
-                                return String(s.studentId).trim() === String(currentUser.studentId).trim();
-                            });
-                            if (latest) currentUser = latest;
-                            renderStudentPortal();
-                            var tab = !document.getElementById('stdTabHistory').classList.contains('hidden') ? 'history' :
-                                      !document.getElementById('stdTabScore').classList.contains('hidden') ? 'score' : 'borrow';
-                            switchStudentTab(tab);
-                        } else if (currentUser.role === 'admin') {
-                            renderAdminPortal();
-                        }
-                    }
-                    applySettings();
-                    if (typeof options.callback === 'function') options.callback();
-                    return true;
-                })
-                .catch(function (err) {
-                    console.error('Cloud load failed; using local data:', err);
-                    cloudReady = true; // allow offline login against this device's saved data
-                    return false;
-                })
-                .finally(function () { cloudSyncBusy = false; });
-        }
-
-        // Registration checks the cloud first to prevent duplicate IDs across devices.
-        function processRegister(e) {
-            e.preventDefault();
-            var studentId = String(document.getElementById('regId').value).trim();
-            var name = document.getElementById('regName').value.trim();
-            var grade = document.getElementById('regGrade').value.trim();
-            var roomNo = String(document.getElementById('regRoomNo').value).trim();
-            var phone = document.getElementById('regPhone').value.trim();
-            var pin = String(document.getElementById('regPin').value).trim();
-
-            if (!/^\d{5}$/.test(studentId)) return alert('กรุณากรอกรหัสนักเรียนเป็นตัวเลข 5 หลัก');
-            if (!/^\d{4,6}$/.test(pin)) return alert('PIN ต้องเป็นตัวเลข 4-6 หลัก');
-            if (!name || !grade || !roomNo || !phone) return alert('กรุณากรอกข้อมูลให้ครบ');
-
-            loadStorage().then(function () {
-                if (students.some(function (s) { return String(s.studentId).trim() === studentId; })) {
-                    alert('รหัสนักเรียนนี้มีผู้ลงทะเบียนแล้ว กรุณาเข้าสู่ระบบด้วยรหัสเดิม');
-                    switchAuthTab('login');
-                    document.getElementById('loginId').value = studentId;
-                    return;
-                }
-                var newStudent = {
-                    studentId: studentId, fullName: name, grade: grade, roomNumber: roomNo,
-                    phone: phone, pin: pin, role: 'student', updatedAt: new Date().toISOString(), score: 100,
-                    scoreLogs: [{ date: new Date().toISOString(), points: 100, reason: 'คะแนนแรกเริ่มเปิดบัญชีนักเรียน' }]
-                };
-                students.push(newStudent);
-                currentUser = newStudent;
-                saveStorage();
-                alert('ลงทะเบียนสำเร็จ! เข้าสู่ระบบให้อัตโนมัติ');
-                document.getElementById('formRegister').reset();
-                renderApp();
-            });
-        }
-
-        function processLogin(e) {
-            e.preventDefault();
-            var inputId = String(document.getElementById('loginId').value).trim();
-            var inputPin = String(document.getElementById('loginPin').value).trim();
-            var submit = document.querySelector('#formLogin button[type="submit"]');
-            if (submit) submit.disabled = true;
-
-            loadStorage().then(function () {
-                if (inputId.toUpperCase() === ADMIN_CREDS.studentId && inputPin === ADMIN_CREDS.pin) {
-                    currentUser = ADMIN_CREDS;
-                } else {
-                    var found = students.find(function (s) {
-                        return String(s.studentId).trim() === inputId && String(s.pin).trim() === inputPin;
-                    });
-                    if (!found) {
-                        alert('ไม่พบข้อมูลบัญชีนี้ หรือ PIN ไม่ถูกต้อง หากเคยลงทะเบียนแล้วให้ตรวจสอบรหัสนักเรียนและ PIN เดิม');
-                        if (submit) submit.disabled = false;
-                        return;
-                    }
-                    currentUser = found;
-                }
-                saveLocalSnapshot();
-                renderApp();
-                if (submit) submit.disabled = false;
-            });
-        }
-
-        // Refresh data every 5 seconds without resetting authentication or returning to register.
-        function ensureDemoAccount() {
-            var demoId = '15686';
-            if (!students.some(function (student) { return String(student.studentId).trim() === demoId; })) {
-                var now = new Date().toISOString();
-                students.push({
-                    studentId: demoId, fullName: 'ผู้ใช้ทดลองระบบ', grade: 'ทดลองใช้งาน',
-                    roomNumber: '-', phone: '-', pin: '1234', role: 'student', score: 100,
-                    scoreLogs: [{ date: now, points: 100, reason: 'บัญชีทดลองระบบ' }],
-                    createdAt: now, updatedAt: now
-                });
-                saveStorage();
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            loadStorage().then(function () {
-                ensureDemoAccount();
-                renderApp();
-            });
-            window.setInterval(function () {
-                if (!document.hidden) loadStorage();
-            }, 5000);
-        });
-        window.addEventListener('storage', function (event) {
-            if (event.key && event.key.indexOf('sr_') === 0) {
-                students = JSON.parse(localStorage.getItem('sr_students') || '[]');
-                borrows = JSON.parse(localStorage.getItem('sr_borrows') || '[]');
-                equipment = JSON.parse(localStorage.getItem('sr_equipment') || '[]');
-                settings = JSON.parse(localStorage.getItem('sr_settings') || '{}');
-                currentUser = JSON.parse(localStorage.getItem('sr_currentUser') || 'null');
-                renderApp();
-            }
-        });
-        // ===== END PATCH =====
-
-        // Demo account for evaluation. It is created only if the ID does not exist.
-        // Student ID: 15686 | PIN: 1234
-        document.addEventListener('DOMContentLoaded', function () {
-            loadStorage().then(function () {
-                var demoId = '15686';
-                var exists = students.some(function (student) {
-                    return String(student.studentId).trim() === demoId;
-                });
-                if (!exists) {
-                    students.push({
-                        studentId: demoId,
-                        fullName: 'ผู้ใช้ทดลองระบบ',
-                        grade: 'ทดลองใช้งาน',
-                        roomNumber: '-',
-                        phone: '-',
-                        pin: '1234',
-                        role: 'student',
-                        score: 100,
-                        scoreLogs: [{ date: new Date().toISOString(), points: 100, reason: 'บัญชีทดลองระบบ' }],
-                        createdAt: new Date().toISOString(),
-                        updatedAt: new Date().toISOString()
-                    });
-                    saveStorage();
-                }
-            }).catch(function (error) {
-                console.error('Demo account initialization failed:', error);
-            });
-        });
-
-</script>
+    </script>
 </body>
 </html>
